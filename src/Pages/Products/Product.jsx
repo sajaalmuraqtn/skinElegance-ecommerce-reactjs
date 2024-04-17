@@ -15,14 +15,24 @@ export default function Product() {
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext);
     const { getProducts, products, setProducts } = useContext(ProductApiContext);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
-
+    
+    const [totalPages,setTotalPages]=useState(0);
     useEffect(() => {
         console.log(location);
         if (location.state) {
             console.log(location.state);
         }
         else {
-            getProducts(page, 'allProducts/active');
+            getProducts(page, 'allProducts/active').then(data => {
+                if (data && data.total) {
+                    const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
+                    setTotalPages(totalPages);
+                } else {
+                    console.error('Invalid response data:', data);
+                }
+            }).catch(error => {
+                console.error('Error fetching products:', error);
+            });
         }
     }, [page]);
 
@@ -31,7 +41,15 @@ export default function Product() {
         // Update the URL with the new page number
         navigate(`?page=${pageNumber}`); // Use navigate instead of history.push
     };
-
+    // Generate pagination buttons dynamically
+    const paginationButtons = [];
+    for (let i = 1; i <= totalPages; i++) {
+        paginationButtons.push(
+            <li className="page-item" key={i}>
+                <a className="page-link" onClick={() => handlePageChange(i)}>{i}</a>
+            </li>
+        );
+    }
 
 
     return (
@@ -69,23 +87,20 @@ export default function Product() {
                                 <Loading margin={100} height={200} fontSize={70} />
                             ) :
                                 products.map((product) => (
-                                    <ProductComponent product={product} key={product._id}/>
-                                    
+                                    <ProductComponent product={product} key={product._id} />
+
                                 ))}
                             {/*== End Product Item ==*/}
-                            {/*== Pagination ==*/}
                             <div className="col-12">
                                 <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                                     <li className="page-item">
-                                        <a className="page-link previous" href="product.html" aria-label="Previous">
+                                        <a className="page-link previous" aria-label="Previous">
                                             <span className="fa fa-chevron-left" aria-hidden="true" />
                                         </a>
                                     </li>
-                                    <li className="page-item"><a className="page-link" onClick={() => handlePageChange(1)}>01</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={() => handlePageChange(2)}>02</a></li>
-                                    <li className="page-item"><a className="page-link" onClick={() => handlePageChange(3)}>03</a></li>
+                                    {paginationButtons}
                                     <li className="page-item">
-                                        <a className="page-link next" href="product.html" aria-label="Next">
+                                        <a className="page-link next"  aria-label="Next">
                                             <span className="fa fa-chevron-right" aria-hidden="true" />
                                         </a>
                                     </li>
@@ -96,9 +111,9 @@ export default function Product() {
                     </div>
                 </section>
                 {/*== End Product Area Wrapper ==*/}
-            </main>
+            </main >
             {/*== Product Quick View Modal ==*/}
-      
+
             {/*== End Product Quick View Modal ==*/}
         </>
     )

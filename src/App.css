@@ -2912,6 +2912,7 @@ hr {
     margin-bottom: 20px;
   }
 }
+
 .product-category-item .title {
   color: #1d4a21;
   font-size: 16px;
@@ -7444,3 +7445,13 @@ hr {
   font-size: 14px;
   padding: 18px 24px;
 }
+
+
+.product-image {
+  width: 370px; /* Set the desired width */
+  height: 450px; /* Set the desired height */
+  object-fit: cover; /* Ensure the image covers the entire container */
+}
+
+
+

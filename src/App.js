@@ -23,6 +23,8 @@ import axios from 'axios';
 import { GlobalFunctionContextProvider } from './Context/globalFunctionsContext.jsx';
 import Product from './Pages/Products/Product.jsx';
 import { ProductApiContextProvider } from './Context/productApiContext.jsx';
+import ProductDetails from './Pages/Products/productDetails.jsx';
+import ProductWithCategory from './Pages/Products/productWithCategory.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 function App() {
@@ -31,9 +33,13 @@ function App() {
     path: '', element: <Layout />, children: [
       { index: true, element: <ProductApiContextProvider><Home /> </ProductApiContextProvider>},
       { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider> , },
+      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory /></ProductApiContextProvider> , },
+      { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider> , },
+      { path: "Products/:productId", element: <ProductDetails/> },
+
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
-      { path: '*', element: <NotFound /> },
+      { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
     ]
   }
 

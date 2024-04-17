@@ -1,11 +1,47 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import ProductComponent from './product.component.jsx'
+import Loading from '../Loading/Loading.jsx'
+import { ProductApiContext } from '../../Context/productApiContext.jsx';
 
 export default function LatestNewProduct() {
+
+  const { getProducts, products, setProducts } = useContext(ProductApiContext);
+  useEffect(() => {
+
+    getProducts(1, 'allProducts/active?limit=6&sort=-createdAt');
+    console.log(products);
+  }, []);
+
+
   return (
     <>
-    
-    
-    
+      {/*== Start Product Area Wrapper ==*/}
+      <section className="section-space" style={{paddingTop:"-60px"}}>
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="section-title text-center">
+                <h2 className="title text-capitalize">latest new</h2>
+              </div>
+            </div>
+          </div>
+          <div className="row mb-n4 mb-sm-n10 g-3 g-sm-6">
+            {/*== Start Product Item ==*/}
+            {products.length === 0 ? (
+              <Loading margin={100} height={200} fontSize={70} />
+            ) :
+              products.map((product) => (
+                <ProductComponent product={product} key={product._id} />
+
+              ))}
+            {/*== End Product Item ==*/}      
+                </div>
+        </div>
+      </section>
+      {/*== End Product Area Wrapper ==*/}
+
+
+
     </>
   )
 }
