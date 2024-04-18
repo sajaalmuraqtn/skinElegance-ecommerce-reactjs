@@ -39,9 +39,9 @@ export default function ProductComponent({product}) {
                     <i className="fa fa-star-half-o" />
                 </div>
             </div>
-            <h4 className="title"><Link to={`/Products/${product.slug}`} state={{productId:product._id}} >{product.name}</Link></h4>
+            <h4 className="title text-capitalize"><Link to={`/Products/${product.slug}`} state={{productId:product._id}} >{product.name}</Link></h4>
             <div className="prices">
-                <span className="price">${product.finalPrice}</span>
+                <span className="price"> ₪{product.finalPrice}</span>
                 <span className="price-old">{product.price}</span>
             </div>
         </div>

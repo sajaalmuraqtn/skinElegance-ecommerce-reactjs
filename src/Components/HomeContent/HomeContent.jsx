@@ -1,6 +1,7 @@
 import React from 'react'
 import textThemeSlider from '../../assets/images/slider/text-theme.webp'
 import slider1 from '../../assets/images/slider/slider1.webp'
+import { Link } from 'react-router-dom'
 export default function HomeContent() {
   return (
     <>{/*== Start Hero Area Wrapper ==*/}
@@ -15,7 +16,7 @@ export default function HomeContent() {
                     <div className="hero-slide-text-img"><img src={textThemeSlider} width={427} height={232} alt="Image" /></div>
                     <h2 className="hero-slide-title">Skin elegance</h2>
                     <p className="hero-slide-desc">Redefining Beauty Through Care Products</p>
-                    <a className="btn btn-border-dark" href="product.html">BUY NOW</a>
+                    <Link className="btn btn-border-dark" to="Products">BUY NOW</Link>
                   </div>
                 </div>
                 <div className="col-12 col-md-6">

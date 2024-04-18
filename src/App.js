@@ -25,6 +25,7 @@ import Product from './Pages/Products/Product.jsx';
 import { ProductApiContextProvider } from './Context/productApiContext.jsx';
 import ProductDetails from './Pages/Products/productDetails.jsx';
 import ProductWithCategory from './Pages/Products/productWithCategory.jsx';
+import ForgotPassword from './Pages/ForgotPassword/forgotPassword.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 function App() {
@@ -37,8 +38,9 @@ function App() {
       { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider> , },
       { path: "Products/:productId", element: <ProductDetails/> },
 
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
+      { path: 'ForgotPassword', element: <ForgotPassword/> },
+      { path: 'Login', element: <Login /> },
+      { path: 'Register', element: <Register /> },
       { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
     ]
   }

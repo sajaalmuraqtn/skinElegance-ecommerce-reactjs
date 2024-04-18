@@ -22,11 +22,8 @@ export default function ProductWithCategory() {
         if (location.state) {
             getProducts(page, `category/${location.state.categoryId}`)
                 .then(data => {
-
                     const totalPages = Math.ceil(data.total / 9);
                     setTotalPages(totalPages);
-
-
                 })
                 .catch(error => {
                     console.error('Error fetching products:', error);
