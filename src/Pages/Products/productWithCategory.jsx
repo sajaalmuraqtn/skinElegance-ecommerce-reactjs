@@ -10,7 +10,6 @@ import NotFound from '../../Components/NotFound/NotFound.jsx';
 export default function ProductWithCategory() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const [emptyCategory, setEmptyCategory] = useState(false);
     const pageFromURL = queryParams.get('page');
     const [page, setPage] = useState(parseInt(pageFromURL) || 1);
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext);
@@ -23,23 +22,18 @@ export default function ProductWithCategory() {
         if (location.state) {
             getProducts(page, `category/${location.state.categoryId}`)
                 .then(data => {
-                    if (data && data.total) {
-                        const totalPages = Math.ceil(data.total / 9);
-                        setTotalPages(totalPages);
-                    } else {
-                        console.error('Invalid response data:', data);
-                    }
-                    console.log(data.message);
-    
-                    // Check if products are empty after fetching
-                    setEmptyCategory(data.products.length === 0);
+
+                    const totalPages = Math.ceil(data.total / 9);
+                    setTotalPages(totalPages);
+
+
                 })
                 .catch(error => {
                     console.error('Error fetching products:', error);
                 });
         }
     }, [location, page]);
-    
+
 
     const handlePageChange = (pageNumber) => {
         setPage(pageNumber);
@@ -76,40 +70,33 @@ export default function ProductWithCategory() {
                 <section className="section-space">
                     <div className="container">
                         <div className="row mb-n4 mb-sm-n10 g-3 g-sm-6">
-                            {emptyCategory ? (
-                                <NotFound
-                                    title={'THERE IS NO PRODUCT YET IN THIS CATEGORY CAN SELECT ANOTHER CATEGORY'}
-                                    titlePage={'Products'}
-                                    goTO={'/Products'}
-                                />
-                            ) : (
-                                <>
-                                    {products.length === 0 ? (
-                                        <Loading margin={100} height={200} fontSize={70} />
-                                    ) : (
-                                        <>
-                                            {products.map((product) => (
-                                                <ProductComponent product={product} key={product._id} />
-                                            ))}
-                                        </>
-                                    )}
-                                    <div className="col-12">
-                                        <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
-                                            <li className="page-item">
-                                                <a className="page-link previous" aria-label="Previous">
-                                                    <span className="fa fa-chevron-left" aria-hidden="true" />
-                                                </a>
-                                            </li>
-                                            {paginationButtons}
-                                            <li className="page-item">
-                                                <a className="page-link next" aria-label="Next">
-                                                    <span className="fa fa-chevron-right" aria-hidden="true" />
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </>
-                            )}
+                            <>
+                                {products.length === 0 ? (
+                                    <Loading margin={100} height={200} fontSize={70} />
+                                ) : (
+                                    <>
+                                        {products.map((product) => (
+                                            <ProductComponent product={product} key={product._id} />
+                                        ))}
+                                    </>
+                                )}
+                                <div className="col-12">
+                                    <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
+                                        <li className="page-item">
+                                            <a className="page-link previous" aria-label="Previous">
+                                                <span className="fa fa-chevron-left" aria-hidden="true" />
+                                            </a>
+                                        </li>
+                                        {paginationButtons}
+                                        <li className="page-item">
+                                            <a className="page-link next" aria-label="Next">
+                                                <span className="fa fa-chevron-right" aria-hidden="true" />
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </>
+
                         </div>
                     </div>
                 </section>

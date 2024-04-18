@@ -7454,4 +7454,8 @@ hr {
 }
 
 
-
+.post-item a img{
+  width: 370px; /* Set the desired width */
+  height: 320px; /* Set the desired height */
+  object-fit: cover; /* Ensure the image covers the entire container */
+}

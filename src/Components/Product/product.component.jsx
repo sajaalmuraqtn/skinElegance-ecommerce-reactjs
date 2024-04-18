@@ -38,7 +38,6 @@ export default function ProductComponent({product}) {
                     <i className="fa fa-star-o" />
                     <i className="fa fa-star-half-o" />
                 </div>
-                <div className="reviews">150 reviews</div>
             </div>
             <h4 className="title"><Link to={`/Products/${product.slug}`} state={{productId:product._id}} >{product.name}</Link></h4>
             <div className="prices">

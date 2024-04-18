@@ -9,18 +9,14 @@ import { useLocation } from 'react-router-dom/dist/index.js';
 export default function Categories({ marginBottom, marginTop, page, latestNew }) {
   const [categories, setCategories] = useState([]);
   const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
-  const { getProducts, products, setProducts } = useContext(ProductApiContext); // Access the context
 
   const location = useLocation();
   const getCategory = async () => {
     try {
       let url = latestNew ? `/catagories/${latestNew}?limit=6&page=${page}` : `/catagories/active?limit=6&page=${page}`;
       const { data } = await axios.get(url);
-      console.log(data);
       if (data.message === "success") {
-        console.log(location);
         setCategories(data.activeCatagories);
-        console.log(categories);
       }
     } catch (error) {
       console.log(error);
@@ -33,7 +29,7 @@ export default function Categories({ marginBottom, marginTop, page, latestNew })
     if (location.pathname === "/Products") {
       setGoTo('category');
     } else if (location.pathname.includes("/Products/category")) {
-      setGoTo('Products/category');
+      setGoTo('/Products/category');
     } else {
       setGoTo('Products/category');
     }
@@ -53,7 +49,7 @@ export default function Categories({ marginBottom, marginTop, page, latestNew })
                 <div className="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4" key={category._id}>
                   {/* Start Product Category Item */}
                   <Link
-                    to={`/${goTo}/${category.slug}`
+                    to={`${goTo}/${category.slug}`
                     }
                     state={{ categoryId: category._id, categoryName: category.name }}
                     className="product-category-item"
