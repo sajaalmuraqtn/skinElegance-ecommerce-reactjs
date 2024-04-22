@@ -39,6 +39,8 @@ import FavoriteList from './Pages/FavoriteList/FavoriteList.jsx';
 import MakeOrder from './Pages/Order/MakeOrder.jsx';
 import UpdatePassword from './Pages/ForgotPassword/UpdatePassword.jsx';
 import { CartContextProvider } from './Context/CartContext.jsx';
+import ResetPassword from './Pages/ForgotPassword/ResetPassword.jsx';
+import SetCode from './Pages/ForgotPassword/SetCode.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 
@@ -60,6 +62,8 @@ function App() {
       { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
       { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword /></AuthContextProvider> },
       { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword /></ProtectedRouter></AuthContextProvider> },
+      { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword /></AuthContextProvider> },
+      { path: 'SetCode', element: <AuthContextProvider><SetCode /></AuthContextProvider> },
       { path: 'Login', element: <Login /> },
       { path: 'Register', element: <AuthContextProvider> <Register /></AuthContextProvider> },
       { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
