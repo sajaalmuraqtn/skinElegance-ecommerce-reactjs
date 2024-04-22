@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
+import { toast } from "react-toastify";
 
 export const ProductApiContext = createContext(null);
 
@@ -24,8 +25,46 @@ export function ProductApiContextProvider({ children }) {
     }
   };
 
+  const [favoriteList, setFavoriteList] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
+  let [statusError, setStatusError] = useState();
+
+  const getFavoriteList = async () => {
+      try {
+          const token = localStorage.getItem("userToken");
+          const response = await axios.get(`/Favorite`, { headers: { authorization: `Saja__${token}` } });
+          const responseData = response.data;
+  
+          if (responseData) {
+              setFavoriteList(responseData.Favorite);
+              setIsEmpty(false);
+          } else {
+              setIsEmpty(true);
+          }
+      } catch (error) {
+          setStatusError(error.response?.data.message || "An error occurred while fetching favorite list.");
+          setIsEmpty(true);
+      }
+  };
+  
+  async function addToFavoriteList(productId) {
+    try {
+        const token = localStorage.getItem('userToken');
+        let objData = { productId };
+        const { data } = await axios.post(`/Favorite`, objData, { headers: { authorization: `Saja__${token}` } });
+        if (data.message == "success") {
+            toast.success('Product added successfully!');
+            getFavoriteList()
+        }
+    } catch (error) {
+        toast.error('Product Already Exist');
+    }
+}
+
+
+
   return (
-    <ProductApiContext.Provider value={{ getProducts, products, setProducts, page, setPage }}>
+    <ProductApiContext.Provider value={{ getProducts, products, setProducts, page, setPage,isEmpty,favoriteList,getFavoriteList,addToFavoriteList}}>
       {children}
     </ProductApiContext.Provider>
   );

@@ -13,6 +13,7 @@ import '../src/assets/css/plugins/fancybox.min.css'
 import '../src/assets/css/plugins/nice-select.css'
 
 import './App.css';
+
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './Components/Layout/Layout';
 import Home from './Pages/Home/Home.jsx';
@@ -26,21 +27,41 @@ import { ProductApiContextProvider } from './Context/productApiContext.jsx';
 import ProductDetails from './Pages/Products/productDetails.jsx';
 import ProductWithCategory from './Pages/Products/productWithCategory.jsx';
 import ForgotPassword from './Pages/ForgotPassword/forgotPassword.jsx';
+import { AuthContext, AuthContextProvider } from './Context/Auth.context.jsx';
+import MyOrders from './Pages/Order/MyOrders.jsx';
+import OrderDetails from './Pages/Order/OrderDetails.jsx';
+import CartPage from './Pages/Cart/CartPage.jsx';
+import ProtectedRouter from './ProtectedRouter/ProtectedRouter.jsx';
+import { useContext, useEffect, useState } from 'react';
+import UpdateProfile from './Pages/Profile/UpdateProfile.jsx';
+import Profile from './Pages/Profile/Profile.jsx';
+import FavoriteList from './Pages/FavoriteList/FavoriteList.jsx';
+import MakeOrder from './Pages/Order/MakeOrder.jsx';
+import UpdatePassword from './Pages/ForgotPassword/UpdatePassword.jsx';
+import { CartContextProvider } from './Context/CartContext.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
+
 function App() {
 
   let routes = createBrowserRouter([{
-    path: '', element: <Layout />, children: [
-      { index: true, element: <ProductApiContextProvider><Home /> </ProductApiContextProvider>},
-      { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider> , },
-      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory /></ProductApiContextProvider> , },
-      { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider> , },
-      { path: "Products/:productId", element: <ProductDetails/> },
-
-      { path: 'ForgotPassword', element: <ForgotPassword/> },
+    path: '', element: <AuthContextProvider> <Layout /> </AuthContextProvider>, children: [
+      { index: true, element: <ProductApiContextProvider><Home /> </ProductApiContextProvider> },
+      { path: 'Products', element: <ProductApiContextProvider><Product /></ProductApiContextProvider>, },
+      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory /></ProductApiContextProvider>, },
+      { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails /></ProductApiContextProvider> },
+      { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
+      { path: 'OrderDetails', element: <AuthContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></AuthContextProvider> },
+      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
+      { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
+      { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder /></ProtectedRouter></AuthContextProvider> },
+      { path: 'Profile', element: <AuthContextProvider><ProtectedRouter><Profile /></ProtectedRouter></AuthContextProvider> },
+      { path: 'UpdateProfile', element: <AuthContextProvider><ProtectedRouter><UpdateProfile /></ProtectedRouter></AuthContextProvider> },
+      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
+      { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword /></AuthContextProvider> },
+      { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword /></ProtectedRouter></AuthContextProvider> },
       { path: 'Login', element: <Login /> },
-      { path: 'Register', element: <Register /> },
+      { path: 'Register', element: <AuthContextProvider> <Register /></AuthContextProvider> },
       { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
     ]
   }
@@ -51,10 +72,14 @@ function App() {
   return (
     <div className="App">
       <GlobalFunctionContextProvider>
+        <CartContextProvider>
 
-        <RouterProvider router={routes}>
+          <AuthContextProvider>
+            <RouterProvider router={routes}>
 
-        </RouterProvider>
+            </RouterProvider>
+          </AuthContextProvider>
+        </CartContextProvider>
       </GlobalFunctionContextProvider>
     </div>
   );
