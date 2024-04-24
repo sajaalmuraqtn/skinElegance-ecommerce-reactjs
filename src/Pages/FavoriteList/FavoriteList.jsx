@@ -38,30 +38,28 @@ export default function FavoriteList() {
         }
     }
 
-  
-
     const addToCart = async (productId) => {
-       await getCart()
-        const token = localStorage.getItem('userToken');
-        let match = false;
-        if (cart) {
-            for (let index = 0; index < cart.products.length; index++) {
-                if (cart.products[index].productId === productId) {
-                    match = true;
-                    toast.error('Product Already Exist');
-                }
-                break;
-            }
-        }
-        if (!cart || !match) {
-            let objData = { productId };
-            const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
-            if (data.message == "success") {
-                toast.success('Product added successfully!');
-                await getCart()
-            }
-        }
-    }
+        await getCart()
+         const token = localStorage.getItem('userToken');
+         let match = false;
+         if (cart) {
+             for (let index = 0; index < cart.products.length; index++) {
+                 if (cart.products[index].productId === productId) {
+                     match = true;
+                     toast.error('Product Already Exist');
+                 }
+                 break;
+             }
+         }
+         if (!cart || !match) {
+             let objData = { productId };
+             const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+             if (data.message == "success") {
+                 toast.success('Product added successfully!');
+                 await getCart()
+             }
+         }
+     }
 
     useEffect(() => {
         getFavoriteList();

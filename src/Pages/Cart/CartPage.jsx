@@ -9,7 +9,7 @@ import axios from 'axios';
 export default function CartPage() {
 
     const { user } = useContext(AuthContext);
-    const { getCart, cart, isEmpty,setIsEmpty } = useContext(CartContext);
+    const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
     async function removeItem(productId) {
         try {
             const token = localStorage.getItem('userToken');
@@ -27,36 +27,61 @@ export default function CartPage() {
     async function clearCart() {
         try {
             const token = localStorage.getItem('userToken');
-            const { data } = await axios.delete(`/cart/clearCart`, { headers: { authorization: `Saja__${token}` } });
-            if (data.message == "success") {
-                toast.success('Clear successfully!');
-                getCart()
+            if (!token) {
+                // Handle case where token is not available
+                // For example, redirect to login page
+                return;
+            }
+
+            const config = {
+                headers: { authorization: `Saja__${token}` }
+            };
+
+            const { data } = await axios.patch(`/cart/clearCart`, {}, config);
+
+            if (data.message === "success") {
+                toast.success('Cleared successfully!');
+                getCart();
                 setIsEmpty(true);
             }
         } catch (error) {
-            toast.error('Error Clear');
+            toast.error('Error clearing cart');
         }
     }
+    const addToCart = async (productId, quantity) => {
+        const token = localStorage.getItem('userToken');
+        let objData = { productId, quantity };
+        const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+        if (data.message == "success") {
+            toast.success('Cart Updated successfully!');
+            getCart()
+        }
+    }
+
+    const updateQuantity = async (productId) => {
+        const newQuantity = document.getElementById(`quantity-${productId}`).value;
+        console.log(productId);
+        await addToCart(productId, newQuantity);
+    };
+
     useEffect(() => {
         getCart();
-        console.log("cart", cart);
     }, [])
 
     return (
         <>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space">
-                    {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> :
-                <> <div className="container">
-                     <div className='row mt-3 mb-5'>
-                                <div className="col-md-1">
-                                </div>
-                                {/* onClick={() => clearFavoriteList()} */}
-                                <button className='btn btn-danger'  style={{ width: '200px' }}>Clear</button>
-                                <div className="col-md-4">
-                                </div>
+                {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> :
+                    <> <div className="container">
+                        <div className='row mt-3 mb-5'>
+                            <div className="col-md-1">
                             </div>
-                       <div className="shopping-cart-form table-responsive">
+                            <button className='btn btn-danger' style={{ width: '200px' }} onClick={() => clearCart()}>Clear</button>
+                            <div className="col-md-4">
+                            </div>
+                        </div>
+                        <div className="shopping-cart-form table-responsive">
                             <form action="#" method="post">
                                 <table className="table text-center">
                                     <thead>
@@ -73,77 +98,77 @@ export default function CartPage() {
                                         {cart?.products?.map((product) => (
                                             <tr className="tbody-item" key={product.productId}>
                                                 <td className="product-remove btn-danger">
-                                                    <a className="remove" onClick={()=>removeItem(product.productId)}>×</a>
+                                                    <a className="remove" onClick={() => removeItem(product.productId)}>×</a>
                                                 </td>
                                                 <td className="product-thumbnail">
                                                     <div className="thumb">
                                                         <Link to={`/Products/${product.productSlug}`} state={{ productId: product.productId }}>
-                                                            <img src={product.mainImage.secure_url}  alt="Image-HasTech" />
+                                                            <img src={product.mainImage.secure_url} alt="Image-HasTech" />
                                                         </Link>
                                                     </div>
                                                 </td>
                                                 <td className="product-name">
-                                                <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId }}>{product.productName}</Link>
+                                                    <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId }}>{product.productName}</Link>
                                                 </td>
                                                 <td className="product-quantity">
                                                     <div className="pro-qty">
-                                                        <input type="text" className="quantity" title="Quantity" defaultValue={1} />
+                                                        <input id={`quantity-${product.productId}`} type="text" className="quantity" title="Quantity" defaultValue={product.quantity} />
                                                     </div>
                                                 </td>
                                                 <td className="product-subtotal">
                                                     <span className="price">₪{product.price}</span>
                                                 </td>
                                                 <td className="product-price">
-                                                    <span className="price btn btn-info">Update</span>
+                                                    <a className="btn btn-info" onClick={() => updateQuantity(product.productId)}>Update</a>
                                                 </td>
                                             </tr>))}
                                     </tbody>
                                 </table>
                             </form>
                         </div>
-                            <div className="row">
-                                <div className="col-12 col-lg-6">
-                                    <div className="coupon-wrap">
-                                        <h4 className="title">Coupon</h4>
-                                        <p className="desc">Enter your coupon code if you have one.</p>
-                                        <input type="text" className="form-control" placeholder="Coupon code" />
-                                        <button type="button" className="btn-coupon">Apply coupon</button>
-                                    </div>
+                        <div className="row">
+                            <div className="col-12 col-lg-6">
+                                <div className="coupon-wrap">
+                                    <h4 className="title">Coupon</h4>
+                                    <p className="desc">Enter your coupon code if you have one.</p>
+                                    <input type="text" className="form-control" placeholder="Coupon code" />
+                                    <button type="button" className="btn-coupon">Apply coupon</button>
                                 </div>
-                                <div className="col-12 col-lg-6">
-                                    <div className="cart-totals-wrap">
-                                        <h2 className="title">Cart totals</h2>
-                                        <table>
-                                            <tbody>
-                                                <tr className="cart-subtotal">
-                                                    <th>Subtotal</th>
-                                                    <td>
-                                                        <span className="amount">₪{cart?cart.totalPrice :''}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="shipping-totals">
-                                                    <th>Shipping</th>
-                                                    <td>
+                            </div>
+                            <div className="col-12 col-lg-6">
+                                <div className="cart-totals-wrap">
+                                    <h2 className="title">Cart totals</h2>
+                                    <table>
+                                        <tbody>
+                                            <tr className="cart-subtotal">
+                                                <th>Subtotal</th>
+                                                <td>
+                                                    <span className="amount">₪{cart ? cart.totalPrice : ''}</span>
+                                                </td>
+                                            </tr>
+                                            <tr className="shipping-totals">
+                                                <th>Shipping</th>
+                                                <td>
 
-                                                        <p className="destination">Shipping to <strong>Cities of Palestine is ₪30</strong>.</p>
-                                                        <a href="javascript:void(0)" className="btn-shipping-address"></a>
-                                                    </td>
-                                                </tr>
-                                                <tr className="order-total">
-                                                    <th>Total</th>
-                                                    <td>
-                                                        <span className="amount">₪{cart?cart.totalPrice + 30:''}</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div className="text-end">
-                                            <Link to={'/MakeOrder'} className="checkout-button">Make Order</Link>
-                                        </div>
+                                                    <p className="destination">Shipping to <strong>Cities of Palestine is ₪30</strong>.</p>
+                                                    <a href="javascript:void(0)" className="btn-shipping-address"></a>
+                                                </td>
+                                            </tr>
+                                            <tr className="order-total">
+                                                <th>Total</th>
+                                                <td>
+                                                    <span className="amount">₪{cart ? cart.totalPrice + 30 : ''}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div className="text-end">
+                                        <Link to={'/MakeOrder'} className="checkout-button">Make Order</Link>
                                     </div>
                                 </div>
                             </div>
-                </div></>}
+                        </div>
+                    </div></>}
             </section>
             {/*== End Product Area Wrapper ==*/}
 
