@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../../Context/CartContext.jsx';
@@ -10,11 +10,13 @@ export default function CartPage() {
 
     const { user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
+    const [statusError, setStatusError] = useState(null);
+    const [productId, setProductId] = useState(null);
     async function removeItem(productId) {
         try {
             const token = localStorage.getItem('userToken');
             let objData = { productId };
-            const { data } = await axios.patch(`/cart/removeItem`, objData, { headers: { authorization: `Saja__${token}` } });
+            const { data } = await axios.patch(`/cart/removeItem`,objData, { headers: { authorization: `Saja__${token}` } });
             if (data.message == "success") {
                 toast.success('Remove successfully!');
                 getCart()
@@ -51,12 +53,24 @@ export default function CartPage() {
     const addToCart = async (productId, quantity) => {
         const token = localStorage.getItem('userToken');
         let objData = { productId, quantity };
-        const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
-        if (data.message == "success") {
-            toast.success('Cart Updated successfully!');
-            getCart()
+    
+        try {
+            const response = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+            
+            if (response.data && response.data.message === "success") {
+                toast.success('Cart Updated successfully!');
+                getCart();
+            } else {
+                console.error("Invalid response from server:", response);
+            }
+        } catch (error) {
+            // Handle error
+            console.error("Error adding to cart:", error);
+            setStatusError(error.response.data.validationError[0].type);
+            return setProductId(productId);
         }
     }
+    
 
     const updateQuantity = async (productId) => {
         const newQuantity = document.getElementById(`quantity-${productId}`).value;
@@ -113,6 +127,8 @@ export default function CartPage() {
                                                 <td className="product-quantity">
                                                     <div className="pro-qty">
                                                         <input id={`quantity-${product.productId}`} type="text" className="quantity" title="Quantity" defaultValue={product.quantity} />
+                                                        {statusError == 'number.positive'&& productId== product.productId? <p className="alert alert-danger mt-2">Negative Number!!</p> : ""
+}
                                                     </div>
                                                 </td>
                                                 <td className="product-subtotal">
@@ -143,7 +159,7 @@ export default function CartPage() {
                                             <tr className="cart-subtotal">
                                                 <th>Subtotal</th>
                                                 <td>
-                                                    <span className="amount">₪{cart ? cart.totalPrice : ''}</span>
+                                                    <span className="amount">₪{cart ? cart.totalPrice.toFixed(2) : ''}</span>
                                                 </td>
                                             </tr>
                                             <tr className="shipping-totals">
@@ -157,7 +173,7 @@ export default function CartPage() {
                                             <tr className="order-total">
                                                 <th>Total</th>
                                                 <td>
-                                                    <span className="amount">₪{cart ? cart.totalPrice + 30 : ''}</span>
+                                                    <span className="amount">₪{cart ? (cart.totalPrice + 30).toFixed(2) : ''}</span>
                                                 </td>
                                             </tr>
                                         </tbody>

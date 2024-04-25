@@ -175,6 +175,8 @@ export default function UpdateProfile() {
                   <button type="submit" className="btn btn-primary">Update</button>
                 </div>
               </form>
+              <Link className="lost-password text-capitalize" to={'/UpdatePassword'}>you want to update Password?</Link>
+
             </div>
           </div>
         </div>}

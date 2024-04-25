@@ -1,15 +1,20 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
 import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
+import { CartContext } from '../../Context/CartContext.jsx';
+import { toast } from 'react-toastify';
 
 export default function ProductDetails() {
 
     const [product, setProduct] = useState(null);
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
     const { addToFavoriteList } = useContext(ProductApiContext);
+    const { getCart} = useContext(CartContext);
+    const [statusError, setStatusError] = useState(null);
+    const [productId, setProductId] = useState(null);
 
     let location = useLocation()
 
@@ -25,6 +30,36 @@ export default function ProductDetails() {
             console.log(error);
         }
     };
+    
+    const addToCart = async (productId, quantity) => {
+        const token = localStorage.getItem('userToken');
+        let objData = { productId, quantity };
+    
+        try {
+            const response = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+            
+            if (response.data && response.data.message === "success") {
+                toast.success('Cart Updated successfully!');
+                getCart();
+            } else {
+                console.error("Invalid response from server:", response);
+            }
+        } catch (error) {
+            // Handle error
+            console.error("Error adding to cart:", error);
+            setStatusError(error.response.data.validationError[0].type);
+            return setProductId(productId);
+        }
+    }
+
+    const inputRef = useRef(null); // Create a ref for the input field
+
+    const updateQuantity = async (productId) => {
+        const newQuantity = inputRef.current.value; // Access the input field value using the ref
+        console.log(productId);
+        await addToCart(productId, newQuantity);
+    };
+
     useEffect(() => {
         getProduct(location.state.productId);
     }
@@ -73,7 +108,9 @@ export default function ProductDetails() {
                                     </div>
                                     <div className="product-details-pro-qty">
                                         <div className="pro-qty">
-                                            <input type="text" title="Quantity" defaultValue={1} />
+                                        <input ref={inputRef} id={`quantity-${product._id}`} type="text" className="quantity" title="Quantity" defaultValue={1} />
+                                        {statusError === 'number.positive'&& productId=== product._id? <p className="alert alert-danger mt-2">Negative Number!!</p> : ""}
+
                                         </div>
                                     </div>
                                     <div className="product-details-shipping-cost">
@@ -84,7 +121,7 @@ export default function ProductDetails() {
                                         <h4 className="price">$254.22</h4>
                                         <div className="product-details-cart-wishlist">
                                             <button type="button" className="btn-wishlist" onClick={() => addToFavoriteList(product._id)}><i className="fa fa-heart-o" /></button>
-                                            <button type="button" className="btn" >Add to cart</button>
+                                            <button type="button" className="btn" onClick={() => updateQuantity(product._id)} >Add to cart</button>
                                         </div>
                                     </div>
                                 </div>

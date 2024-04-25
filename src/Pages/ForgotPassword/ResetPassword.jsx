@@ -5,6 +5,7 @@ import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
+import { toast } from 'react-toastify';
 export default function Login() {
 
   // Use array destructuring to get the state variable and the function to update it
@@ -15,30 +16,33 @@ export default function Login() {
 
   let schema = Yup.object(
     {
-      email: Yup.string().required("email is required").email("email invalid"),
-      password: Yup.string().min(10, "minimum characters is 10").max(15, "maximum characters is 15")
-    }
+      code: Yup.string().required("Code is required"),
+      email: Yup.string().required("Email is required").email("Invalid email"),
+      password: Yup.string().min(10, "Minimum characters is 10").max(15, "Maximum characters is 15").required("Password is required"),
+      confirmPassword: Yup.string().min(10, "Minimum characters is 10").max(15, "Maximum characters is 15").oneOf([Yup.ref('password')], "Confirm password must match password").required("Confirm password is required"),
+      }
   )
 
   let formik = useFormik(
     {
       initialValues: {
         email: "",
-        password: ""
-      }, onSubmit: sendLoginData,
+        password: "",
+        confirmPassword:"",
+        code:""
+      }, onSubmit: sendResetPasswordData,
       validationSchema: schema
     });
 
-    async function sendLoginData(values) {
+    async function sendResetPasswordData(values) {
       try {
-        const response = await axios.post('/auth/signIn', values);
+        const response = await axios.patch('/auth/forgotPassword', values);
         const { data } = response;
        console.log(data.message);
         if (data.message === "success") {
-          localStorage.setItem('userToken', data.token);
-          getProfile();
-          navigate('/');
-          console.log(user);
+          toast("Password Reset successfully");
+          navigate('/Login');
+
         } else {
           setErrors(data.err[0]);
         }
@@ -49,7 +53,7 @@ export default function Login() {
 
   return (
     <>
-      <section className="section-space" style={{ height: '100vh' }}>
+      <section className="section-space" >
         <div className="container">
           <div className="row mb-n8" style={{ marginTop: '50px' }}>
             {/* Start Skin Elegance Section */}
@@ -69,26 +73,33 @@ export default function Login() {
                 <h3 className="title fs-1">Reset Password</h3>
                 <div className="my-account-form">
                   <form method="post" onSubmit={formik.handleSubmit}>
-                 
+                  <div className="form-group mb-6">
+                      <label htmlFor="register_email">Email Address <sup>*</sup></label>
+                      <input type="email" id="register_email" name="email" value={formik.values.email} onChange={formik.handleChange} />
+                      {(statusError && statusError.includes('email') )? <p className="alert alert-danger mt-2">{statusError}</p>:''}
+                      {formik.errors.email && <p className="alert alert-danger mt-2">{formik.errors.email}</p>}
+                    </div>
                     <div className="form-group mb-6">
                       <label htmlFor="register_password">Password <sup>*</sup></label>
                       <input type="password" id="register_password" name="password" value={formik.values.password} onChange={formik.handleChange} />
                       {formik.errors.password ? <p className="alert alert-danger mt-2">{formik.errors.password}</p> : ""}
                     </div>
-                    {(statusError && !statusError.includes('email')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
                     <div className="form-group mb-6">
-                      <label htmlFor="register_password">Confirm Password <sup>*</sup></label>
-                      <input type="password" id="register_password" name="password" value={formik.values.password} onChange={formik.handleChange} />
-                      {formik.errors.password ? <p className="alert alert-danger mt-2">{formik.errors.password}</p> : ""}
+                      <label htmlFor="confirm_password">Confirm Password <sup>*</sup></label>
+                      <input type="password" id="confirm_password" name="confirmPassword" value={formik.values.confirmPassword} onChange={formik.handleChange} />
+                      {formik.errors.confirmPassword ? <p className="alert alert-danger mt-2">{formik.errors.confirmPassword}</p> : ""}
                     </div>
-                    {(statusError && !statusError.includes('email')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
+                    <div className="form-group mb-6">
+                      <label htmlFor="register_Code">Code <sup>*</sup></label>
+                      <input type="text" id="register_Code" name="code" value={formik.values.code} onChange={formik.handleChange} />
+                      {formik.errors.code ? <p className="alert alert-danger mt-2">{formik.errors.code}</p> : ""}
+                    </div>
 
                     <div className="form-group d-flex align-items-center mb-14">
                       <button type="submit" className="btn">Reset</button>
                     </div>
                   </form>
-                  <Link className="lost-password col-md-12" to={'/ForgotPassword'}>Lost your Password?</Link>
-                  <Link className="lost-password text-capitalize" to={'/Register'}>you do not have account?</Link>
+
                 </div>
               </div>
             </div>
