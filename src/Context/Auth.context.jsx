@@ -9,6 +9,7 @@ export function AuthContextProvider({ children }) {
    
   async function getProfile() {
     const token = localStorage.getItem("userToken");
+  
     const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
     setUser(data.user);
   }

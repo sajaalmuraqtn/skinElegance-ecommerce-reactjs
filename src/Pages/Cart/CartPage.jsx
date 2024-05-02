@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../Context/Auth.context.jsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../Context/CartContext.jsx';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { toast } from 'react-toastify';
@@ -12,9 +12,14 @@ export default function CartPage() {
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
     const [statusError, setStatusError] = useState(null);
     const [productId, setProductId] = useState(null);
+    let navigate = useNavigate()
+
     async function removeItem(productId) {
         try {
             const token = localStorage.getItem('userToken');
+            if (!token) {
+                return navigate("/Login");
+              }
             let objData = { productId };
             const { data } = await axios.patch(`/cart/removeItem`,objData, { headers: { authorization: `Saja__${token}` } });
             if (data.message == "success") {
@@ -47,8 +52,7 @@ export default function CartPage() {
                 setIsEmpty(true);
             }
         } catch (error) {
-            toast.error('Error clearing cart');
-        }
+         }
     }
     const addToCart = async (productId, quantity) => {
         const token = localStorage.getItem('userToken');
@@ -143,15 +147,10 @@ export default function CartPage() {
                             </form>
                         </div>
                         <div className="row">
-                            <div className="col-12 col-lg-6">
-                                <div className="coupon-wrap">
-                                    <h4 className="title">Coupon</h4>
-                                    <p className="desc">Enter your coupon code if you have one.</p>
-                                    <input type="text" className="form-control" placeholder="Coupon code" />
-                                    <button type="button" className="btn-coupon">Apply coupon</button>
-                                </div>
+                            <div className="col-12 col-lg-4">
+                      
                             </div>
-                            <div className="col-12 col-lg-6">
+                            <div className="col-12 col-lg-7">
                                 <div className="cart-totals-wrap">
                                     <h2 className="title">Cart totals</h2>
                                     <table>
@@ -187,8 +186,6 @@ export default function CartPage() {
                     </div></>}
             </section>
             {/*== End Product Area Wrapper ==*/}
-
-
         </>
     )
 }

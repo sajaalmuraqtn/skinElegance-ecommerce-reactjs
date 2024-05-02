@@ -53,7 +53,7 @@ function App() {
       { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory /></ProductApiContextProvider>, },
       { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails /></ProductApiContextProvider> },
       { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
-      { path: 'OrderDetails', element: <AuthContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></AuthContextProvider> },
+      { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></ProductApiContextProvider> },
       { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
       { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
       { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder /></ProtectedRouter></AuthContextProvider> },

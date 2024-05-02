@@ -3,14 +3,18 @@ import "./profile.css"
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 export default function Profile() {
 
   const {getProfile,user} = useContext(AuthContext);
+  let navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return navigate("/Login")
+    }
     getProfile()
-    console.log(user);
   }, [])
   return (
     <><main className="main-content pt-10 pb-10 container" style={{ height: "100vh" }}>

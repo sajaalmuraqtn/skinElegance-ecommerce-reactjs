@@ -14,13 +14,12 @@ export default function Layout() {
   function LogOut() {
     setUser(null);
     localStorage.removeItem("userToken");
-    navigate('/login')
+    navigate('/Login')
     getProfile()
   }
   useEffect(() => {
     if (localStorage.getItem("userToken")) {
       getProfile()
-      console.log(user);
     }
   }, [])
 

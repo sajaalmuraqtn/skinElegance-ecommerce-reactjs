@@ -18,7 +18,6 @@ export function CartContextProvider({ children }) {
 
       if (responseData.cart.products.length>0) {
         setCart(responseData.cart);
-        console.log(cart);
         setIsEmpty(false);
       } else {
         setIsEmpty(true);

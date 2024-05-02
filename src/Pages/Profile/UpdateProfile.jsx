@@ -73,6 +73,9 @@ export default function UpdateProfile() {
 
   async function getProfile() {
     const token = localStorage.getItem("userToken");
+    if (!token) {
+      return navigate("/Login");
+    }
     const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
     setUser(data.user);
     

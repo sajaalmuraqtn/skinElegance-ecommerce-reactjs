@@ -4,17 +4,21 @@ import axios from 'axios';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../Context/CartContext.jsx';
 
 export default function FavoriteList() {
     const { user } = useContext(AuthContext);
     const { isEmpty, favoriteList, getFavoriteList } = useContext(ProductApiContext)
     const { getCart, cart } = useContext(CartContext);
+    let navigate = useNavigate()
 
     async function clearFavoriteList() {
         try {
             const token = localStorage.getItem('userToken');
+            if (!token) {
+                return navigate("/Login");
+              }
             const { data } = await axios.delete(`/Favorite/clearFavorite`, { headers: { authorization: `Saja__${token}` } });
             if (data.message == "success") {
                 toast.success('Clear successfully!');

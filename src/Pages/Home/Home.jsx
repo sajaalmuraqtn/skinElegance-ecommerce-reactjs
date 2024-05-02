@@ -7,11 +7,11 @@ import CouponSection from '../../Components/Coupon/couponSection.jsx'
 export default function Home() {
 
    return (
-    < >
+    <>
       <HomeContent />
       <Categories marginBottom={130} page={1} latestNew='LatestNewActiveCategory' />
       <LatestNewProduct/>
       <CouponSection/>
-    </ >
+    </>
   )
 }
