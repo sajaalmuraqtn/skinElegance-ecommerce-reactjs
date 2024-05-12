@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom'; // Import useNaviga
 import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import ProductComponent from '../../Components/Product/product.component.jsx';
+import axios from 'axios';
+import CategoryComponent from '../../Components/Categories/categoryComponent.jsx';
 
 export default function Product() {
     const location = useLocation();
@@ -12,12 +14,34 @@ export default function Product() {
     const pageFromURL = queryParams.get('page');
     const [page, setPage] = useState(parseInt(pageFromURL) || 1);
     const [selectedProduct, setSelectedProduct] = useState(null); // State variable to track the selected product
-    const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext);
+
+    const [categories, setCategories] = useState([]);
+  
+    const chunkArray = (array, size) => {
+      const chunkedArr = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunkedArr.push(array.slice(i, i + size));
+      }
+      return chunkedArr;
+    };
+
     const { getProducts, products, setProducts } = useContext(ProductApiContext);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
-    
+    const getCategory = async () => {
+        try {
+          let url =`/catagories/active`;
+          const { data } = await axios.get(url);
+          if (data.message === "success") {
+            setCategories(data.activeCatagories);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
     const [totalPages,setTotalPages]=useState(0);
     useEffect(() => {
+        getCategory()
         console.log(location);
         if (location.state) {
             console.log(location.state);
@@ -51,7 +75,6 @@ export default function Product() {
         );
     }
 
-
     return (
         <>
             <main className="main-content ">
@@ -65,9 +88,43 @@ export default function Product() {
                     </div>
                 </section>
                 {/*== End Page Header Area Wrapper ==*/}
-                <Categories marginBottom={100} marginTop={40} />
-                {/*== End Product Category Area Wrapper ==*/}
+                <section className="section-space" style={{ marginBottom: `-100px`, marginTop: `-40px` }}>
+        <div className="container">
+          {categories.length === 0 ? (
+            <Loading margin={100} height={200} fontSize={70} />
+          ) : (
+            <div id='carouselExampleFade5' className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+              <div className="carousel-inner">
+                {chunkArray(categories, 6).map((chunk, index) => (
+                  <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                    <div className="row g-3 g-sm-6">
+                      {chunk.map((category) => (
+                        <CategoryComponent category={category} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
+              <div className="col-12">
+                <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
+                  <li className="page-item">
+                    <a className="page-link previous" href='#carouselExampleFade5' role="button" data-bs-slide="prev">
+                      <span className="fa fa-chevron-left" aria-hidden="true" />
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link next" href='#carouselExampleFade5' role="button" data-bs-slide="next">
+                      <span className="fa fa-chevron-right" aria-hidden="true" />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+                {/*== End Product Category Area Wrapper ==*/}
 
                 {/*== Start Page Header Area Wrapper ==*/}
                 <section className="page-header-area " data-bg-color="#FFF3DA">

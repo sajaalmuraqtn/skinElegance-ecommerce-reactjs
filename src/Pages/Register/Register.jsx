@@ -5,6 +5,7 @@ import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   // Use array destructuring to get the state variable and the function to update it
@@ -40,7 +41,14 @@ export default function Register() {
     const { name, files } = e.target;
     formik.setFieldValue(name, files[0]);
   };
-
+  const handlePlaceOrder = () => {
+    const privacyCheckbox = document.getElementById("privacy");
+    if (privacyCheckbox.checked) {
+      formik.handleSubmit();
+    } else {
+      toast.error('Please agree to the terms and conditions.');
+    }
+  };
   async function sendRegisterData(values) {
     let formData = new FormData();
     formData.append('image', values.file); // Ensure the file is appended with the correct field name
@@ -51,21 +59,20 @@ export default function Register() {
     formData.append('address', values.address);
     formData.append('phoneNumber', values.phoneNumber);
 
-    
-      let { data } = await axios.post('/auth/signUp', formData).catch((err)=>{
-        setStatusError(err.response.data.message);
-        console.error(err.response.data.message);
-     })
-      if (data.message === "success") {
-        setStatusError('');
-        setErrors([]);
-        navigate('/Login');
-      } else {
-        setErrors(data.err[0]);
-      }
-       console.log(data)
-    } 
-  
+    let { data } = await axios.post('/auth/signUp', formData).catch((err) => {
+      setStatusError(err.response.data.message);
+      console.error(err.response.data.message);
+    })
+    if (data.message === "success") {
+      setStatusError('');
+      setErrors([]);
+      navigate('/Login');
+    } else {
+      setErrors(data.err[0]);
+    }
+    console.log(data)
+  }
+
 
   return (
     <>
@@ -93,13 +100,13 @@ export default function Register() {
                     <div className="form-group mb-6">
                       <label htmlFor="register_username">User Name <sup>*</sup></label>
                       <input type="text" id="register_username" name="userName" value={formik.values.userName} onChange={formik.handleChange} />
-                      {(statusError && statusError.includes('userName'))?<p className="alert alert-danger mt-2">{statusError}</p>:''}
+                      {(statusError && statusError.includes('userName')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
                       {formik.errors.userName ? <p className="alert alert-danger mt-2">{formik.errors.userName}</p> : ""}
                     </div>
                     <div className="form-group mb-6">
                       <label htmlFor="register_email">Email Address <sup>*</sup></label>
                       <input type="email" id="register_email" name="email" value={formik.values.email} onChange={formik.handleChange} />
-                      {(statusError && statusError.includes('email') )? <p className="alert alert-danger mt-2">{statusError}</p>:''}
+                      {(statusError && statusError.includes('email')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
                       {formik.errors.email && <p className="alert alert-danger mt-2">{formik.errors.email}</p>}
                     </div>
 
@@ -130,7 +137,19 @@ export default function Register() {
                     {/* Your other form fields */}
                     <div className="form-group">
                       <p className="desc mb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
-                      <button type="submit" className="btn">Register</button>
+                      <form method="post" onSubmit={formik.handleSubmit}>
+                        {/* Your form inputs */}
+                        <div className="agree-policy">
+                          <div className='d-flex'>
+                             <input type="checkbox" id="privacy" style={{width:'15px', marginRight:'20px'}}/>
+                            <label htmlFor="privacy" className='mt-1'>
+                              I have read and agree to the website terms and conditions <sup>*</sup>
+                            </label>
+                              
+                          </div>
+                        </div>
+                      </form>
+                      <button type="submit" className="btn mt-3" onClick={handlePlaceOrder}>Register</button>
                     </div>
                     <Link className="lost-password text-capitalize" to={'/Login'}>Already have an account?</Link>
                   </form>

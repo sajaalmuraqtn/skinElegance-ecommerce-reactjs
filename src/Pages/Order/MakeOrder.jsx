@@ -41,18 +41,18 @@ export default function MakeOrder() {
 
     const formik = useFormik({
         initialValues: {
-            firstName:"",
-            lastName:"",
-            note:"",
-            city:"",
-            couponName:"",
-            address:"",
-            phoneNumber:""
+            firstName: "",
+            lastName: "",
+            note: "",
+            city: "",
+            couponName: "",
+            address: "",
+            phoneNumber: ""
         },
         onSubmit: sendOrderData,
         validationSchema: schema
     });
-    
+
     const handlePlaceOrder = () => {
         const privacyCheckbox = document.getElementById("privacy");
         if (privacyCheckbox.checked) {
@@ -62,43 +62,25 @@ export default function MakeOrder() {
         }
     };
     async function sendOrderData(values) {
-            const token = localStorage.getItem('userToken');
-            const formData = new FormData();
-            formData.append('firstName', values.firstName);
-            formData.append('lastName', values.lastName);
-            formData.append('city', values.city);
-            console.log(values);
+        const token = localStorage.getItem('userToken');
+        if (values.note==='') {
+            
+        }
+        // Make the request to the server
+        let { data } = await axios.post('/order', values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
+            setStatusError(err.response.data.message);
+            console.error(err.response.data.message);
+        })
 
-            // Append fields to the form data only if they are not empty
-            if (values.couponName && values.couponName !== "") {
-                formData.append('couponName', values.couponName);
-                console.log(values.couponName);
-            }
-            if (values.address && values.address !== "") {
-                formData.append('address', values.address);
-            }
-            if (values.phoneNumber && values.phoneNumber !== "") {
-                formData.append('phoneNumber', values.phoneNumber);
-            }
-            if (values.note && values.note !== "") {
-                formData.append('note', values.note);
-            }
-            console.log(formData);
-            // Make the request to the server
-            let { data } = await axios.post('/order', formData, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
-                setStatusError(err.response.data.message);
-                console.error(err.response.data.message);
-              })
+        if (data.message === "success") {
+            toast.success('Order Made successfully!');
+            setStatusError('');
+            setErrors([]);
+            console.log(data);
+        } else {
+            setErrors(data.validationError);
+        }
 
-            if (data.message === "success") {
-                toast.success('Order Made successfully!');
-                setStatusError('');
-                setErrors([]);
-                console.log(data);
-            } else {
-                setErrors(data.validationError);
-            }
-   
     }
 
     useEffect(() => {
@@ -110,7 +92,7 @@ export default function MakeOrder() {
             {/*== Start Shopping Checkout Area Wrapper ==*/}
             <section className="shopping-checkout-wrap section-space">
                 <div className="container">
-                  {  isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> :<div className="row">
+                    {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> : <div className="row">
                         <div className="col-lg-6">
                             {/*== Start Billing Accordion ==*/}
                             <div className="checkout-billing-details-wrap">
@@ -137,6 +119,7 @@ export default function MakeOrder() {
                                                 <div className="form-group">
                                                     <label htmlFor="order-city">Town / City <abbr className="required" title="required">*</abbr></label>
                                                     <select id="order-city" name="city" value={formik.values.city} onChange={formik.handleChange} className="form-control wide">
+                                                        <option>Select City</option>
                                                         <option value={"Hebron"}>Hebron</option>
                                                         <option value={"Nablus"}>Nablus</option>
                                                         <option value={"Jerusalem"}>Jerusalem</option>
@@ -163,7 +146,7 @@ export default function MakeOrder() {
                                             <div className="col-md-12 mt-5">
                                                 <div className="form-group">
                                                     <label htmlFor="order-phone">Phone (optional)</label>
-                                                    <input type="text" id="order-phone" name="phoneNumber" value={formik.values.phoneNumber} onChange={formik.handleChange}  className="form-control" />
+                                                    <input type="text" id="order-phone" name="phoneNumber" value={formik.values.phoneNumber} onChange={formik.handleChange} className="form-control" />
                                                     {formik.errors.phoneNumber ? <p className="alert alert-danger mt-2">{formik.errors.phoneNumber}</p> : ""}
                                                 </div>
                                             </div>

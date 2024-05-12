@@ -3,50 +3,54 @@ import "./profile.css"
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export default function Profile() {
 
-  const {getProfile,user} = useContext(AuthContext);
-  let navigate = useNavigate();
+  const { getProfile, user } = useContext(AuthContext);
 
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
-    if (!token) {
-        return navigate("/Login")
-    }
     getProfile()
+    console.log(user);
   }, [])
   return (
-    <><main className="main-content pt-10 pb-10 container" style={{ height: "100vh" }}>
-      {!user ? <Loading height={500} fontSize={70} />
+    <><main className="main-content pt-10 pb-10 container" style={{ height: "100vh"}}>
+      {!user ? <Loading fontSize={70} height={280} marginTop={50} />
         :
         <div className="row" style={{ height: "100vh", marginTop: "100px" }}>
           {/* left column */}
           <div className="col-md-3 mt-2">
             <div className="text-center">
-              <img src={user.image.secure_url} className="avatar img-circle img-thumbnail" alt="avatar" />
+              <img src={user?.image?.secure_url} className="avatar img-circle img-thumbnail" alt="avatar" />
             </div>
             <span style={{ marginLeft: "50px", color: "black" }} className={user.status === "Active" ? "bg-success p-1 mt-5" : "bg-danger p-1 mt-5"}>{user.status}</span>
           </div>
           {/* edit form column */}
-          <div className="col-md-7 personal-info" style={{ marginLeft: "10px" }}>
+          <div className="col-lg-6">
+            {/*== Start Register Area Wrapper ==*/}
+            <div className="my-account-item-wrap">
+              <h3 className="title">Personal Information</h3>
+              <div className="my-account-form">
+                <form>
+                  <div className="form-group mb-6">
+                    <label htmlFor="register_username">User Name </label>
+                    <input type="text" id="register_username" value={user.userName} name="userName" />
+                  </div>
+                  
+                 {user.address? <div className="form-group mb-6">
+                    <label htmlFor="register_address">Address </label>
+                    <input type="text" id="register_address" value={user.address} name="address" />
+                  </div>:''}
+                 {user.phoneNumber? <div className="form-group mb-6">
+                    <label htmlFor="register_phone">Phone Number </label>
+                    <input type="text" id="register_phone"  value={user.phoneNumber} name="phoneNumber" />
+                  </div>:''}
 
-            <h1 style={{ marginBottom: "30px" }}>Personal info</h1>
-            <div className="form-group mt-4 row">
-              <h3 className="col-lg-3 text-danger ">Name:</h3>
-              <h4 className="col-lg-5 mt-1 text-capitalize">{user.userName}</h4>
+                </form>
+              </div>
             </div>
-            <div className="form-group mt-4 row">
-              <h3 className="col-lg-5 text-danger">Phone Number:</h3>
-              <h4 className="col-lg-3 mt-1 ">{user.phoneNumber}</h4>
-            </div>
-            <div className="form-group mt-4 row">
-              <h3 className="col-lg-3 text-danger">Address:</h3>
-              <h4 className="col-lg-7 mt-1 ">{user.address}</h4>
-            </div>
-
+            {/*== End Register Area Wrapper ==*/}
           </div>
-          <Link to={'/updateProfile'} className='btn btn-primary mb-10'> Update Profile</Link>
+          <Link to={'/updateProfile'} className='btn btn-primary ' style={{marginTop:'-90px',marginBottom:'-50px'}}> Update Profile</Link>
         </div>
       }
     </main>

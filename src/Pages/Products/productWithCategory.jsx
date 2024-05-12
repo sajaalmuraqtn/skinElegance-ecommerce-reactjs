@@ -6,6 +6,8 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import ProductComponent from '../../Components/Product/product.component.jsx';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
+import CategoryComponent from '../../Components/Categories/categoryComponent.jsx';
+import axios from 'axios';
 
 export default function ProductWithCategory() {
     const location = useLocation();
@@ -18,7 +20,28 @@ export default function ProductWithCategory() {
 
     const [totalPages, setTotalPages] = useState(0);
 
+    const [categories, setCategories] = useState([]);
+  
+    const chunkArray = (array, size) => {
+      const chunkedArr = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunkedArr.push(array.slice(i, i + size));
+      }
+      return chunkedArr;
+    };
+    const getCategory = async () => {
+        try {
+          let url = `/catagories/active`;
+          const { data } = await axios.get(url);
+          if (data.message === "success") {
+            setCategories(data.activeCatagories);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
     useEffect(() => {
+        getCategory()
         if (location.state) {
             getProducts(page, `category/${location.state.categoryId}`)
                 .then(data => {
@@ -56,8 +79,45 @@ export default function ProductWithCategory() {
                         </div>
                     </div>
                 </section>
-                <Categories marginBottom={100} marginTop={40} />
-                <section className="page-header-area" data-bg-color="#FFF3DA">
+
+  <section className="section-space" style={{ marginBottom: `-100px`, marginTop: `-40px` }}>
+        <div className="container">
+          {categories.length === 0 ? (
+            <Loading margin={100} height={200} fontSize={70} />
+          ) : (
+            <div id='carouselExampleFade4' className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+              <div className="carousel-inner">
+                {chunkArray(categories, 6).map((chunk, index) => (
+                  <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                    <div className="row g-3 g-sm-6">
+                      {chunk.map((category) => (
+                        <CategoryComponent category={category} />
+
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="col-12">
+                <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
+                  <li className="page-item">
+                    <a className="page-link previous" href='#carouselExampleFade4' role="button" data-bs-slide="prev">
+                      <span className="fa fa-chevron-left" aria-hidden="true" />
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link next" href='#carouselExampleFade4' role="button" data-bs-slide="next">
+                      <span className="fa fa-chevron-right" aria-hidden="true" />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>              
+        <section className="page-header-area" data-bg-color="#FFF3DA">
                     <div className="container">
                         <div className="page-header-st3-content mt-10">
                             <h2 className="page-header-title text-Capitalize">{location.state.categoryName}</h2>

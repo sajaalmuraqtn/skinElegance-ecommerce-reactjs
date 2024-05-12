@@ -3,8 +3,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import '../src/assets/images/favicon.webp'
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import '../src/assets/css/vendor/bootstrap.min.css'
 
 import '../src/assets/css/plugins/swiper-bundle.min.css'
@@ -41,6 +46,7 @@ import UpdatePassword from './Pages/ForgotPassword/UpdatePassword.jsx';
 import { CartContextProvider } from './Context/CartContext.jsx';
 import ResetPassword from './Pages/ForgotPassword/ResetPassword.jsx';
 import SetCode from './Pages/ForgotPassword/SetCode.jsx';
+import CancelOrder from './Pages/Order/cancelOrder.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 
@@ -54,6 +60,7 @@ function App() {
       { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails /></ProductApiContextProvider> },
       { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
       { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></ProductApiContextProvider> },
+      { path: 'MyOrders/CancelOrder', element:<ProtectedRouter><CancelOrder /></ProtectedRouter>},
       { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
       { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
       { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder /></ProtectedRouter></AuthContextProvider> },

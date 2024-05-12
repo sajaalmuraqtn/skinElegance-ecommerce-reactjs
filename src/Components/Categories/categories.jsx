@@ -3,29 +3,24 @@ import axios from 'axios';
 import Loading from '../Loading/Loading.jsx';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
 import { Link } from 'react-router-dom';
-import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { useLocation } from 'react-router-dom/dist/index.js';
+import CategoryComponent from './categoryComponent.jsx';
 
 export default function Categories({ marginBottom, marginTop, page, latestNew }) {
   const [categories, setCategories] = useState([]);
-  const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
-
   const location = useLocation();
-  const getCategory = async () => {
-    try {
-      let url = latestNew ? `/catagories/${latestNew}?limit=6&page=${page}` : `/catagories/active?limit=6&page=${page}`;
-      const { data } = await axios.get(url);
-      if (data.message === "success") {
-        setCategories(data.activeCatagories);
-      }
-    } catch (error) {
-      console.log(error);
+
+  const chunkArray = (array, size) => {
+    const chunkedArr = [];
+    for (let i = 0; i < array.length; i += size) {
+      chunkedArr.push(array.slice(i, i + size));
     }
+    return chunkedArr;
   };
 
   const [goTo, setGoTo] = useState('');
+
   useEffect(() => {
-    getCategory();
     if (location.pathname === "/Products") {
       setGoTo('category');
     } else if (location.pathname.includes("/Products/category")) {
@@ -33,40 +28,46 @@ export default function Categories({ marginBottom, marginTop, page, latestNew })
     } else {
       setGoTo('Products/category');
     }
-  }, [location.pathname]);
-  
+  }, [location.pathname]); // Update effect when location.pathname or CoucalId changes
 
   return (
     <>
       {/* Start Product Category Area Wrapper */}
-      <section className="section-space" style={{ marginBottom: `-${marginBottom}px`, marginTop: `-${marginTop}px` }} >
+      <section className="section-space" style={{ marginBottom: `-${marginBottom}px`, marginTop: `-${marginTop}px` }}>
         <div className="container">
-          <div className="row g-3 g-sm-6">
-            {categories.length === 0 ? (
-              <Loading margin={100} height={200} fontSize={70} />
-            ) :
-              categories.map((category) => (
-                <div className="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4" key={category._id}>
-                  {/* Start Product Category Item */}
-                  <Link
-                    to={`${goTo}/${category.slug}`
-                    }
-                    state={{ categoryId: category._id, categoryName: category.name }}
-                    className="product-category-item"
-                    style={{ backgroundColor: selectRandomColor() }}
-                  >
-                    <img className="icon" src={category.image.secure_url} width={80} height={80} alt="Image-HasTech" />
-                    <h3 className="title text-capitalize">{category.name}</h3>
-                    {/* Conditionally render content based on whether the category was created this month */}
-                    {isCreatedThisMonth(category.createdAt) && (
-                      <span className="flag-new bg-danger">new</span>
-                    )}
-                  </Link>
-                  {/* End Product Category Item */}
-                </div>
-              ))}
+          {categories.length === 0 ? (
+            <Loading margin={100} height={200} fontSize={70} />
+          ) : (
+            <div id='carouselExampleFade5' className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+              <div className="carousel-inner">
+                {chunkArray(categories, 6).map((chunk, index) => (
+                  <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                    <div className="row g-3 g-sm-6">
+                      {chunk.map((category) => (
+                        <CategoryComponent category={category} />
 
-          </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="col-12">
+                <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
+                  <li className="page-item">
+                    <a className="page-link previous" href='#carouselExampleFade5' role="button" data-bs-slide="prev">
+                      <span className="fa fa-chevron-left" aria-hidden="true" />
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link next" href='#carouselExampleFade5' role="button" data-bs-slide="next">
+                      <span className="fa fa-chevron-right" aria-hidden="true" />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </section>
       {/* End Product Category Area Wrapper */}

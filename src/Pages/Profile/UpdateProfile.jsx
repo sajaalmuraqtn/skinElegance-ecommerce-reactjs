@@ -109,7 +109,7 @@ export default function UpdateProfile() {
             </div>
           </div>
         </section>
-        {!user ? <Loading height={500} fontSize={70} />
+        {!user ? <Loading height={600} fontSize={70} />
         :
         <div className="row">
           {/* left column */}

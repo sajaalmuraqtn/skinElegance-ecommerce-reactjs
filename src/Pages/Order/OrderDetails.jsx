@@ -39,10 +39,11 @@ export default function OrderDetails() {
     <>
       {/*== Start Product Area Wrapper ==*/}
       <section className="section-space">
-        {!order? <Loading margin={100} height={200} fontSize={70} /> :
+        {!order ? <Loading margin={100} height={200} fontSize={70} /> :
           <> <div className="container">
             <div className='row mt-3 mb-5'>
               <div className="col-md-1">
+                <h4>Products</h4>
               </div>
               <div className="col-md-4">
               </div>
@@ -155,10 +156,20 @@ export default function OrderDetails() {
                           <span className="amount">₪{order ? (order?.finalPrice + 30).toFixed(2) : ''}</span>
                         </td>
                       </tr>
+                      {order.contact ? <tr className="order-total">
+                        <th>Contact</th>
+                        <td>
+                          <span className="destination ">{order.contact.adminEmail}</span> /
+                          <span className="destination ">{order.contact.adminPhoneNumber}</span>
+                        </td>
+                      </tr> : ''}
                     </tbody>
                   </table>
                   <div className="text-end">
-                    <Link to={'/MakeOrder'} className="checkout-button">Make Order</Link>
+                    {
+                      order.status === "pending" ? <>
+                        <Link to={'/MyOrders/CancelOrder'} state={{ orderId: order._id }} className="btn-danger p-3 m-3">Cancel Order</Link>
+                      </> : ''}
                   </div>
                 </div>
               </div>
