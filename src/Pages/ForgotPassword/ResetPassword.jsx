@@ -6,13 +6,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
 import { toast } from 'react-toastify';
-export default function Login() {
+import { Helmet } from 'react-helmet';
+export default function ResetPassword({ logo }) {
 
   // Use array destructuring to get the state variable and the function to update it
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
   let navigate = useNavigate();
-  const {getProfile,user} = useContext(AuthContext);
+  const { getProfile, user } = useContext(AuthContext);
 
   let schema = Yup.object(
     {
@@ -20,7 +21,7 @@ export default function Login() {
       email: Yup.string().required("Email is required").email("Invalid email"),
       password: Yup.string().min(10, "Minimum characters is 10").max(15, "Maximum characters is 15").required("Password is required"),
       confirmPassword: Yup.string().min(10, "Minimum characters is 10").max(15, "Maximum characters is 15").oneOf([Yup.ref('password')], "Confirm password must match password").required("Confirm password is required"),
-      }
+    }
   )
 
   let formik = useFormik(
@@ -28,31 +29,36 @@ export default function Login() {
       initialValues: {
         email: "",
         password: "",
-        confirmPassword:"",
-        code:""
+        confirmPassword: "",
+        code: ""
       }, onSubmit: sendResetPasswordData,
       validationSchema: schema
     });
 
-    async function sendResetPasswordData(values) {
-      try {
-        const response = await axios.patch('/auth/forgotPassword', values);
-        const { data } = response;
-       console.log(data.message);
-        if (data.message === "success") {
-          toast("Password Reset successfully");
-          navigate('/Login');
+  async function sendResetPasswordData(values) {
+    try {
+      const response = await axios.patch('/auth/forgotPassword', values);
+      const { data } = response;
+      console.log(data.message);
+      if (data.message === "success") {
+        toast("Password Reset successfully");
+        navigate('/Login');
 
-        } else {
-          setErrors(data.err[0]);
-        }
-      } catch (err) {
-        setStatusError(err.response.data.message);
+      } else {
+        setErrors(data.err[0]);
       }
+    } catch (err) {
+      setStatusError(err.response.data.message);
     }
+  }
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|ResetPassword</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
       <section className="section-space" >
         <div className="container">
           <div className="row mb-n8" style={{ marginTop: '50px' }}>
@@ -73,10 +79,10 @@ export default function Login() {
                 <h3 className="title fs-1">Reset Password</h3>
                 <div className="my-account-form">
                   <form method="post" onSubmit={formik.handleSubmit}>
-                  <div className="form-group mb-6">
+                    <div className="form-group mb-6">
                       <label htmlFor="register_email">Email Address <sup>*</sup></label>
                       <input type="email" id="register_email" name="email" value={formik.values.email} onChange={formik.handleChange} />
-                      {(statusError && statusError.includes('email') )? <p className="alert alert-danger mt-2">{statusError}</p>:''}
+                      {(statusError && statusError.includes('email')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
                       {formik.errors.email && <p className="alert alert-danger mt-2">{formik.errors.email}</p>}
                     </div>
                     <div className="form-group mb-6">

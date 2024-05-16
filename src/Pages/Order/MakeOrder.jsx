@@ -7,12 +7,15 @@ import { CartContext } from '../../Context/CartContext.jsx';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
+import { AuthContext } from '../../Context/Auth.context.jsx';
+import { Helmet } from 'react-helmet';
 
-export default function MakeOrder() {
+export default function MakeOrder({logo}) {
     let [errors, setErrors] = useState([]);
     let [statusError, setStatusError] = useState('');
     let navigate = useNavigate();
     const [coupons, setCoupons] = useState([]);
+    const { getProfile, user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
 
     const getCoupons = async () => {
@@ -63,8 +66,14 @@ export default function MakeOrder() {
     };
     async function sendOrderData(values) {
         const token = localStorage.getItem('userToken');
-        if (values.note==='') {
-            
+        if (values.note === '') {
+            values.note = '----------';
+        }
+        if (values.phoneNumber === '') {
+            values.phoneNumber = user.phoneNumber;
+        }
+        if (values.address === '') {
+            values.address = user.address;
         }
         // Make the request to the server
         let { data } = await axios.post('/order', values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
@@ -86,9 +95,16 @@ export default function MakeOrder() {
     useEffect(() => {
         getCoupons();
         getCart();
+        getProfile();
+
     }, [])
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>SkinElegance|MakeOrder</title>
+                <meta property="og:image" content={`${logo}`} />
+            </Helmet>
             {/*== Start Shopping Checkout Area Wrapper ==*/}
             <section className="shopping-checkout-wrap section-space">
                 <div className="container">
@@ -155,7 +171,7 @@ export default function MakeOrder() {
                                             <div className="col-md-12 mt-5">
                                                 <div className="form-group mb-0">
                                                     <label htmlFor="order-notes">Order notes (optional)</label>
-                                                    <textarea id="order-notes" name="note" className="form-control" value={formik.values.note} onChange={formik.handleChange} placeholder="Notes about your order, e.g. special notes for delivery." defaultValue={""} />
+                                                    <textarea id="order-notes" name="note" className="form-control" value={formik.values.note} onChange={formik.handleChange} placeholder="Notes about your order, e.g. special notes for delivery." />
                                                     {formik.errors.note ? <p className="alert alert-danger mt-2">{formik.errors.note}</p> : ""}
                                                 </div>
                                             </div>
@@ -171,6 +187,8 @@ export default function MakeOrder() {
                                                         ))}
                                                     </select>
                                                 </div>
+                                                {(statusError && statusError.includes('coupon')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
+
                                             </div>
                                         </div>
 
@@ -193,7 +211,7 @@ export default function MakeOrder() {
                                         </thead>
                                         <tbody className="table-body">
                                             {cart?.products?.map((product) => (
-                                                <tr className="cart-item">
+                                                <tr className="cart-item" key={product._id}>
                                                     <td className="product-name text-capitalize">{product?.productName} <span className="product-quantity">× {product?.quantity}</span></td>
                                                     <td className="product-total">₪{product?.price}</td>
                                                 </tr>

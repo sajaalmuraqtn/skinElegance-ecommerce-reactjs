@@ -6,8 +6,9 @@ import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../Context/CartContext.jsx';
+import { Helmet } from 'react-helmet';
 
-export default function FavoriteList() {
+export default function FavoriteList({logo}) {
     const { user } = useContext(AuthContext);
     const { isEmpty, favoriteList, getFavoriteList } = useContext(ProductApiContext)
     const { getCart, cart } = useContext(CartContext);
@@ -72,6 +73,11 @@ export default function FavoriteList() {
 
     return (
         <>
+         <Helmet>
+            <meta charSet="utf-8" />
+            <title>SkinElegance|FavoriteList</title>
+            <meta property="og:image" content={`${logo}`} />
+        </Helmet>
             <main className="main-content">
 
                 {/* == Start Wishlist Area Wrapper ==*/}

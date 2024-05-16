@@ -24,7 +24,7 @@ export default function CategoryComponent({category}) {
                 {/* Start Product Category Item */}
                 <Link
                     to={`${goTo}/${category.slug}`}
-                    state={{ categoryId: category._id, categoryName: category.name }}
+                    state={{ categoryId: category._id, categoryName: category.name,slug:category.slug }}
                     className="product-category-item"
                     style={{ backgroundColor: selectRandomColor() }}
                 >

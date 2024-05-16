@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
-export default function MyOrders() {
+export default function MyOrders({ logo }) {
     const [myOrders, setMyOrders] = useState([]);
 
     const getMyOrders = async () => {
@@ -26,37 +27,39 @@ export default function MyOrders() {
     }, [])
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>SkinElegance|Orders</title>
+                <meta property="og:image" content={`${logo}`} />
+            </Helmet>
             {/*== Start Product Area Wrapper ==*/}
-            <section className="section-space">
+            <section className="section-space" style={{ marginBottom: '-50px' }}>
                 <div className="container">
                     <div className="shopping-wishlist-form table-responsive">
-                            <table className="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th className="product-remove">&nbsp;</th>
-                                        <th className="product-name">Payment Type</th>
-                                        <th className="product-quantity">Coupon Name</th>
-                                        <th className="product-price">Created At</th>
-                                        <th className="product-price">Status</th>
-                                        <th className="product-subtotal">Shipping</th>
-                                        <th className="product-subtotal">Total</th>
-                                        <th className="product-remove">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {myOrders.map((order) => (
-                                    <tr className="tbody-item p-1"  key={order._id}>
-                                        <td className="product-remove  btn-danger">
-                                            <a className="remove" >X</a>
-                                        </td>
+                        <table className="table text-center">
+                            <thead>
+                                <tr>
+                                    <th className="product-name">Payment Type</th>
+                                    <th className="product-quantity">Coupon Name</th>
+                                    <th className="product-price">Created At</th>
+                                    <th className="product-price">Status</th>
+                                    <th className="product-subtotal">Shipping</th>
+                                    <th className="product-subtotal">Total</th>
+                                    <th className="product-remove">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {myOrders.map((order) => (
+                                    <tr className="tbody-item p-1" key={order._id}>
+
                                         <td className="product-name">
-                                        <span className="text-capitalize">{order.paymentType}</span>
+                                            <span className="text-capitalize">{order.paymentType}</span>
                                         </td>
                                         <td className="product-price">
                                             <span className="price">{order.couponName === "" ? ' -' : order.couponName}</span>
                                         </td>
-                                        
-                                      <td className="product-name" >
+
+                                        <td className="product-name" >
                                             <div className=" text-capitalize">
                                                 {order.createdAt.split('T')[0]}
                                             </div>
@@ -64,7 +67,7 @@ export default function MyOrders() {
                                                 {order.createdAt.split('T')[1]}
                                             </div>
                                         </td>
-                                      <td className="product-name" >
+                                        <td className="product-name" >
                                             <div className=" text-capitalize">
                                                 {order.status}
                                             </div>
@@ -76,13 +79,13 @@ export default function MyOrders() {
                                             <span className="price">₪{order.finalPrice}</span>
                                         </td>
                                         <td className="product-price">
-                                            <Link className="btn btn-info" state={{orderId:order._id}} to={"OrderDetails"}>Details</Link>
+                                            <Link className="btn btn-info" state={{ orderId: order._id }} to={"OrderDetails"}>Details</Link>
                                         </td>
                                     </tr>
                                 ))
                                 }
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

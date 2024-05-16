@@ -11,10 +11,13 @@ export function ProductApiContextProvider({ children }) {
   let [page, setPage] = useState(1);
 
 
-  const getProducts = async (page, urlProduct) => {
+  const getProducts = async (page, urlProduct,searchQuery) => {
     try {
       const separator = urlProduct.includes('?') ? '&' : '?'; // to put the sort and other filters method
-      const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}`);
+      if (searchQuery) {
+        searchQuery=`search=${searchQuery}`;
+      }
+      const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}&${searchQuery}`);
       console.log(data);
       if (data.message === "success") {
         setProducts(data.products);

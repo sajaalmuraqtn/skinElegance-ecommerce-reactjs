@@ -5,13 +5,14 @@ import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
-export default function Login() {
+import { Helmet } from 'react-helmet';
+export default function Login({logo}) {
 
   // Use array destructuring to get the state variable and the function to update it
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
   let navigate = useNavigate();
-  const {getProfile,user} = useContext(AuthContext);
+  const { getProfile, user } = useContext(AuthContext);
 
   let schema = Yup.object(
     {
@@ -29,26 +30,31 @@ export default function Login() {
       validationSchema: schema
     });
 
-    async function sendLoginData(values) {
-      try {
-        const response = await axios.post('/auth/signIn', values);
-        const { data } = response;
-       console.log(data.message);
-        if (data.message === "success") {
-          localStorage.setItem('userToken', data.token);
-          getProfile();
-          navigate('/');
-          console.log(user);
-        } else {
-          setErrors(data.err[0]);
-        }
-      } catch (err) {
-        setStatusError(err.response.data.message);
+  async function sendLoginData(values) {
+    try {
+      const response = await axios.post('/auth/signIn', values);
+      const { data } = response;
+      console.log(data.message);
+      if (data.message === "success") {
+        localStorage.setItem('userToken', data.token);
+        getProfile();
+        navigate('/');
+        console.log(user);
+      } else {
+        setErrors(data.err[0]);
       }
+    } catch (err) {
+      setStatusError(err.response.data.message);
     }
+  }
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|Login</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
       <section className="section-space" style={{ height: '100vh' }}>
         <div className="container">
           <div className="row mb-n8" style={{ marginTop: '50px' }}>

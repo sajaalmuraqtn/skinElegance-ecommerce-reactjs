@@ -8,8 +8,9 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { CartContext } from '../../Context/CartContext.jsx';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
-export default function ProductDetails() {
+export default function ProductDetails({logo}) {
 
     const [product, setProduct] = useState(null);
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
@@ -36,7 +37,7 @@ export default function ProductDetails() {
         const token = localStorage.getItem('userToken');
         if (!token) {
             return navigate("/Login");
-          }
+        }
         let objData = { productId, quantity };
         try {
             const response = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
@@ -82,14 +83,14 @@ export default function ProductDetails() {
         const token = localStorage.getItem('userToken');
         if (!token) {
             return navigate("/Login");
-          }
+        }
         console.log(values);
         let { data } = await axios.post(`/products/${location.state.productId}/review/create`, values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
             setStatusError(err.response.data.message);
-            if (statusError=="already review") {
-                toast.error('Already Review');   
+            if (statusError == "already review") {
+                toast.error('Already Review');
             }
-            else{
+            else {
                 toast.error('Cant add Review');
             }
         })
@@ -113,11 +114,15 @@ export default function ProductDetails() {
 
     return (
         <> {/*== Start Product Details Area Wrapper ==*/}
-
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>SkinElegance|Products-{location.state.slug}</title>
+                <meta property="og:image" content={`${logo}`} />
+            </Helmet>
             < section className="section-space" >
                 <div className="container">
                     {!product ? (
-                        <Loading margin={100} height={200} fontSize={70} />
+                        <Loading margin={100} height={500} fontSize={70} />
                     ) : <>
                         <div className="row product-details">
                             <div className="col-lg-6">
@@ -154,7 +159,8 @@ export default function ProductDetails() {
                                         </div>
                                     </div>
                                     <div className="product-details-action">
-                                        <h4 className="price">₪{product.finalPrice}</h4>
+                                        <h4 className="price text-decoration-line-through text-danger fs-3 ">₪{product.price.toFixed(2)}</h4>
+                                        <h4 className="price fs-3" style={{ marginLeft: '10px' }}>₪{product.finalPrice.toFixed(2)}</h4>
                                         <div className="product-details-cart-wishlist">
                                             <button type="button" className="btn-wishlist" onClick={() => addToFavorite(product._id)}><i className="fa fa-heart-o" /></button>
                                             <button type="button" className="btn" onClick={() => updateQuantity(product._id)} >Add <i className="fas fa-cart-shopping"></i></button>
@@ -163,7 +169,7 @@ export default function ProductDetails() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row" style={{ marginBottom: '-80px' }}>
                             <div className="col-lg-7">
                                 <div className="nav product-details-nav" id="product-details-nav-tab" role="tablist">
                                     <button className="nav-link" id="specification-tab" data-bs-toggle="tab" data-bs-target="#specification" type="button" role="tab" aria-controls="specification" aria-selected="false">Specification</button>
@@ -183,32 +189,35 @@ export default function ProductDetails() {
                                     </div>
                                     <div className="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
                                         {/*== Start Reviews Content Item ==*/}
-                                        {product.reviews.map((review) => (
+                                        {
+                                            product.reviews.length == 0 ?
+                                                <h4>There is no review yet</h4> :
+                                                product.reviews.map((review) => (
 
-                                            <div className="product-review-item" key={review._id}>
-                                                <div className="product-review-top">
-                                                    <div className="product-review-thumb">
-                                                        <img src={review.createdByUser.image.secure_url} width={90}  alt="Images" />
-                                                    </div>
-                                                    <div className="product-review-content">
-                                                        <span className="product-review-name fs-6">{review.createdByUser.userName}</span>
-                                                        <div className="product-review-icon">
-                                                            {review.rating}
-                                                            {Array(review.rating).fill().map((_, index) => (
-                                                                <i key={index} className="fa fa-star" />
-                                                            ))
-                                                            }
+                                                    <div className="product-review-item" key={review._id}>
+                                                        <div className="product-review-top">
+                                                            <div className="product-review-thumb">
+                                                                <img src={review.createdByUser.image.secure_url} width={90} alt="Images" />
+                                                            </div>
+                                                            <div className="product-review-content">
+                                                                <span className="product-review-name fs-6">{review.createdByUser.userName}</span>
+                                                                <div className="product-review-icon">
+                                                                    {review.rating}
+                                                                    {Array(review.rating).fill().map((_, index) => (
+                                                                        <i key={index} className="fa fa-star" />
+                                                                    ))
+                                                                    }
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <p className="desc fs-4">{review.comment}</p>
-                                            </div>))}
+                                                        <p className="desc fs-4">{review.comment}</p>
+                                                    </div>))}
                                         {/*== End Reviews Content Item ==*/}
 
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-5">
+                            <div className="col-lg-5" style={{ marginTop: "-200px" }}>
                                 <div className="product-reviews-form-wrap">
                                     <h4 className="product-form-title">Leave a replay</h4>
                                     <div className="product-reviews-form">
@@ -221,6 +230,7 @@ export default function ProductDetails() {
                                             <div className="form-input-item">
                                                 <div className="form-ratings-item">
                                                     <select id="product-review-form-rating-select" name='rating' value={formik.values.rating} onChange={formik.handleChange} className="select-ratings">
+                                                        <option>Rating</option>
                                                         <option value={1}>01</option>
                                                         <option value={2}>02</option>
                                                         <option value={3}>03</option>

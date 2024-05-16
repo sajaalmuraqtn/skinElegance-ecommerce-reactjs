@@ -3,8 +3,9 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
+import { Helmet } from 'react-helmet';
 
-export default function OrderDetails() {
+export default function OrderDetails({logo}) {
   const [products, setProducts] = useState(null);
   const [order, setOrder] = useState(null);
   const { addToFavoriteList } = useContext(ProductApiContext);
@@ -37,9 +38,14 @@ export default function OrderDetails() {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|Orders-OrderDetails</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
       {/*== Start Product Area Wrapper ==*/}
-      <section className="section-space">
-        {!order ? <Loading margin={100} height={200} fontSize={70} /> :
+      <section className="section-space" style={{ marginBottom: '-60px' }}>
+        {!order ? <Loading margin={50} height={500} fontSize={70} /> :
           <> <div className="container">
             <div className='row mt-3 mb-5'>
               <div className="col-md-1">
@@ -119,6 +125,18 @@ export default function OrderDetails() {
                           <p className="destination"><strong>{order.status}</strong>.</p>
                         </td>
                       </tr>
+                      {order.status === "cancelled" ? <tr className="shipping-totals">
+                        <th>Reason Canceled</th>
+                        <td>
+                          <p className="destination"><strong>{order.reasonRejected}</strong>.</p>
+                        </td>
+                      </tr> : ''}
+                      <tr className="shipping-totals">
+                        <th>Status</th>
+                        <td>
+                          <p className="destination"><strong>{order.status}</strong>.</p>
+                        </td>
+                      </tr>
                       <tr className="shipping-totals">
                         <th>Phone Number</th>
                         <td>
@@ -163,9 +181,10 @@ export default function OrderDetails() {
                           <span className="destination ">{order.contact.adminPhoneNumber}</span>
                         </td>
                       </tr> : ''}
+
                     </tbody>
                   </table>
-                  <div className="text-end">
+                  <div className="mt-5">
                     {
                       order.status === "pending" ? <>
                         <Link to={'/MyOrders/CancelOrder'} state={{ orderId: order._id }} className="btn-danger p-3 m-3">Cancel Order</Link>

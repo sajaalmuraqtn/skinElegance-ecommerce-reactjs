@@ -5,8 +5,9 @@ import { CartContext } from '../../Context/CartContext.jsx';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
-export default function CartPage() {
+export default function CartPage({logo}) {
 
     const { user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
@@ -19,9 +20,9 @@ export default function CartPage() {
             const token = localStorage.getItem('userToken');
             if (!token) {
                 return navigate("/Login");
-              }
+            }
             let objData = { productId };
-            const { data } = await axios.patch(`/cart/removeItem`,objData, { headers: { authorization: `Saja__${token}` } });
+            const { data } = await axios.patch(`/cart/removeItem`, objData, { headers: { authorization: `Saja__${token}` } });
             if (data.message == "success") {
                 toast.success('Remove successfully!');
                 getCart()
@@ -52,15 +53,15 @@ export default function CartPage() {
                 setIsEmpty(true);
             }
         } catch (error) {
-         }
+        }
     }
     const addToCart = async (productId, quantity) => {
         const token = localStorage.getItem('userToken');
         let objData = { productId, quantity };
-    
+
         try {
             const response = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
-            
+
             if (response.data && response.data.message === "success") {
                 toast.success('Cart Updated successfully!');
                 getCart();
@@ -74,7 +75,7 @@ export default function CartPage() {
             return setProductId(productId);
         }
     }
-    
+
 
     const updateQuantity = async (productId) => {
         const newQuantity = document.getElementById(`quantity-${productId}`).value;
@@ -88,6 +89,11 @@ export default function CartPage() {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>SkinElegance|Cart</title>
+                <meta property="og:image" content={`${logo}`} />
+            </Helmet>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space">
                 {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> :
@@ -131,8 +137,8 @@ export default function CartPage() {
                                                 <td className="product-quantity">
                                                     <div className="pro-qty">
                                                         <input id={`quantity-${product.productId}`} type="text" className="quantity" title="Quantity" defaultValue={product.quantity} />
-                                                        {statusError == 'number.positive'&& productId== product.productId? <p className="alert alert-danger mt-2">Negative Number!!</p> : ""
-}
+                                                        {statusError == 'number.positive' && productId == product.productId ? <p className="alert alert-danger mt-2">Negative Number!!</p> : ""
+                                                        }
                                                     </div>
                                                 </td>
                                                 <td className="product-subtotal">
@@ -148,7 +154,7 @@ export default function CartPage() {
                         </div>
                         <div className="row">
                             <div className="col-12 col-lg-4">
-                      
+
                             </div>
                             <div className="col-12 col-lg-7">
                                 <div className="cart-totals-wrap">

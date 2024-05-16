@@ -6,8 +6,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
-export default function Register() {
+export default function Register({logo}) {
   // Use array destructuring to get the state variable and the function to update it
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
@@ -76,6 +77,11 @@ export default function Register() {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|Register</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
       {/*== Start Account Area Wrapper ==*/}
       <section className="section-space">
         <div className="container">
@@ -141,11 +147,11 @@ export default function Register() {
                         {/* Your form inputs */}
                         <div className="agree-policy">
                           <div className='d-flex'>
-                             <input type="checkbox" id="privacy" style={{width:'15px', marginRight:'20px'}}/>
+                            <input type="checkbox" id="privacy" style={{ width: '15px', marginRight: '20px' }} />
                             <label htmlFor="privacy" className='mt-1'>
                               I have read and agree to the website terms and conditions <sup>*</sup>
                             </label>
-                              
+
                           </div>
                         </div>
                       </form>

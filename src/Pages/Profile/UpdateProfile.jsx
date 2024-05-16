@@ -8,10 +8,11 @@ import axios from 'axios';
 import "./profile.css"
 import Loading from '../../Components/Loading/Loading.jsx';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
-export default function UpdateProfile() {
+export default function UpdateProfile({logo}) {
   // Use array destructuring to get the state variable and the function to update it
-  const {saveCurrentUser} = useContext(AuthContext);
+  const { saveCurrentUser } = useContext(AuthContext);
 
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
@@ -44,7 +45,7 @@ export default function UpdateProfile() {
       formData.append('image', values.file);
     }
     if (values.userName) {
-        formData.append('userName', values.userName);
+      formData.append('userName', values.userName);
     }
     if (values.address) {
       formData.append('address', values.address);
@@ -52,8 +53,8 @@ export default function UpdateProfile() {
     if (values.phoneNumber) {
       formData.append('phoneNumber', values.phoneNumber);
     }
-    
-    
+
+
     const token = localStorage.getItem("userToken");
 
     let { data } = await axios.patch('/user/update', formData, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
@@ -78,7 +79,7 @@ export default function UpdateProfile() {
     }
     const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
     setUser(data.user);
-    
+
     // Update formik's initial values after getting user profile
     formik.setValues({
       userName: data.user.userName,
@@ -99,7 +100,12 @@ export default function UpdateProfile() {
 
   return (
     <>
-    <main className="main-content pb-10 container">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|UpdateProfile</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
+      <main className="main-content pb-10 container">
         {/*== Start Product Category Area Wrapper ==*/}
         {/*== Start Page Header Area Wrapper ==*/}
         <section className="page-header-area pt-10 pb-10" data-bg-color="#FFF3DA">
@@ -109,23 +115,23 @@ export default function UpdateProfile() {
             </div>
           </div>
         </section>
-        {!user ? <Loading height={600} fontSize={70} />
-        :
-        <div className="row">
-          {/* left column */}
-          <div className="col-md-3">
-            <div className="text-center">
-              <img src={user.image.secure_url} className="avatar img-circle img-thumbnail" alt="avatar" />
-              <div className="form-group mb-3">
-                <input type="file" name="file" onChange={handleFileChange} className="form-control" id="register_image" />
-              </div>
+        {!user ? <Loading height={500} fontSize={70} margin={70} />
+          :
+          <div className="row">
+            {/* left column */}
+            <div className="col-md-3">
+              <div className="text-center">
+                <img src={user.image.secure_url} className="avatar img-circle img-thumbnail" alt="avatar" />
+                <div className="form-group mb-3">
+                  <input type="file" name="file" onChange={handleFileChange} className="form-control" id="register_image" />
+                </div>
 
+              </div>
             </div>
-          </div>
-          <div className="col-md-7 personal-info" style={{ marginLeft: "30px" }}>
-            <div className="my-account-form">
-              <form method="post" onSubmit={formik.handleSubmit}>
-           
+            <div className="col-md-7 personal-info" style={{ marginLeft: "30px" }}>
+              <div className="my-account-form">
+                <form method="post" onSubmit={formik.handleSubmit}>
+
                   <div className="form-group mb-6">
                     <label htmlFor="register_username">User Name </label>
                     <input
@@ -139,9 +145,9 @@ export default function UpdateProfile() {
                     {formik.errors.userName ? <p className="alert alert-danger mt-2">{formik.errors.userName}</p> : ""}
                     {/* Error handling code */}
                   </div>
-            
 
-                
+
+
                   <div className="form-group mb-6">
                     <label htmlFor="register_address">Address </label>
                     <input
@@ -155,9 +161,9 @@ export default function UpdateProfile() {
 
                     {/* Error handling code */}
                   </div>
-                
 
-                
+
+
                   <div className="form-group mb-6">
                     <label htmlFor="register_phone">Phone Number</label>
                     <input
@@ -171,18 +177,18 @@ export default function UpdateProfile() {
 
                     {/* Error handling code */}
                   </div>
-                
 
-                {/* Your other form fields */}
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary">Update</button>
-                </div>
-              </form>
-              <Link className="lost-password text-capitalize" to={'/UpdatePassword'}>you want to update Password?</Link>
 
+                  {/* Your other form fields */}
+                  <div className="form-group">
+                    <button type="submit" className="btn btn-primary">Update</button>
+                  </div>
+                </form>
+                <Link className="lost-password text-capitalize" to={'/UpdatePassword'}>you want to update Password?</Link>
+
+              </div>
             </div>
-          </div>
-        </div>}
+          </div>}
       </main>
     </>
 

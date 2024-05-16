@@ -38,6 +38,7 @@ export default function CouponSection() {
                     <div className="col-12">
                         <div className="section-title text-center">
                             <h2 className="title">Coupons</h2>
+                            <p>Embark on a journey to luminous skin and effortless glamour with our thoughtfully curated beauty offerings</p>
                         </div>
                     </div>
                 </div>

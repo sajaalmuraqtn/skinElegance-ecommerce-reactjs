@@ -5,8 +5,9 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
-export default function ForgotPassword() {
+export default function ForgotPassword({logo}) {
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
   let navigate = useNavigate();
@@ -42,6 +43,11 @@ export default function ForgotPassword() {
   }
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>SkinElegance|ForgotPassword</title>
+        <meta property="og:image" content={`${logo}`} />
+      </Helmet>
       <section className="section-space" style={{ height: '100vh' }}>
         <div className="container">
           <div className="row mb-n8" style={{ marginTop: '50px' }}>
@@ -61,11 +67,11 @@ export default function ForgotPassword() {
               <div className="my-account-item-wrap">
                 <h3 className="title">Forgot Password</h3>
                 <div className="my-account-form">
-                  <form  method="post"  onSubmit={formik.handleSubmit}>
-                  <div className="form-group mb-6">
+                  <form method="post" onSubmit={formik.handleSubmit}>
+                    <div className="form-group mb-6">
                       <label htmlFor="register_email">Email Address <sup>*</sup></label>
                       <input type="email" id="register_email" name="email" value={formik.values.email} onChange={formik.handleChange} />
-                      {(statusError && statusError.includes('email') )? <p className="alert alert-danger mt-2">{statusError}</p>:''}
+                      {(statusError && statusError.includes('email')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
                       {formik.errors.email && <p className="alert alert-danger mt-2">{formik.errors.email}</p>}
                     </div>
 

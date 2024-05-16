@@ -28,6 +28,10 @@ export default function Navbar({ logo, user, LogOut }) {
                       Favorite
                       <i className="fas fa-solid fa-heart"  style={{ marginLeft: "5px", color: '#ff6565' }}></i>
                     </Link></li>
+                    <li> <Link aria-current="page" to="/Advertisements" style={{color: location.pathname.includes('/Advertisements') ? '#ff6565':''}}>
+                    Advertisements
+                      <i className="fas fa-solid fa-icons"  style={{ marginLeft: "5px", color: '#ff6565' }}></i>
+                    </Link></li>
                   </> : ''}
 
                 </ul>

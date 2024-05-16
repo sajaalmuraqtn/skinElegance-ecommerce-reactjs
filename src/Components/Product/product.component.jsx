@@ -51,7 +51,7 @@ export default function ProductComponent({ product }) {
         <div className="col-6 col-lg-4 mb-4 mb-sm-8">
             <div className="product-item">
                 <div className="product-thumb">
-                    <Link className="d-block" to={`/Products/${product.slug}`} state={{ productId: product._id }}>
+                    <Link className="d-block" to={`/Products/${product.slug}`} state={{ productId: product._id,slug:product.slug }}>
                         <img className="product-image" src={product.mainImage.secure_url} width={370} height={450} alt="Image-HasTech" />
                     </Link>
                     {isCreatedThisMonth(product.createdAt) && (
@@ -79,11 +79,13 @@ export default function ProductComponent({ product }) {
                             <i className="fa fa-star-o" />
                             <i className="fa fa-star-half-o" />
                         </div>
+                        <div class="reviews">{product.reviews?.length} reviews</div>
+
                     </div>
                     <h4 className="title text-capitalize"><Link to={`/Products/${product.slug}`} state={{ productId: product._id }} >{product.name}</Link></h4>
                     <div className="prices">
                         <span className="price"> ₪{product.finalPrice}</span>
-                        <span className="price-old">{product.price}</span>
+                        <span className="price-old text-danger fs-6">{product.price}</span>
                     </div>
                 </div>
 

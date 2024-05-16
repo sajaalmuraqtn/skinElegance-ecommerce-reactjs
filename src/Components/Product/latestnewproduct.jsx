@@ -16,12 +16,14 @@ export default function LatestNewProduct() {
   return (
     <>
       {/*== Start Product Area Wrapper ==*/}
-      <section className="section-space" style={{paddingTop:"-60px"}}>
+      <section className="section-space" style={{marginTop:"-170px"}}>
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="section-title text-center">
                 <h2 className="title text-capitalize">latest new</h2>
+                <p>Transform your beauty routine into a ritual of self-care with our enchanting selection of skincare treasures</p>
+
               </div>
             </div>
           </div>
