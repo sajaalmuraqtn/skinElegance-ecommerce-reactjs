@@ -25,7 +25,7 @@ export default function AdvertisementDetails({logo}) {
         <> {/*== Start Product Details Area Wrapper ==*/}
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>SkinElegance|Advertisements-{location.state.slug}</title>
+                <title>SkinElegance|Advertisements-{location.state.slug} </title>
                 <meta property="og:image" content={logo} />
             </Helmet>
             < section className="section-space" style={{ marginBottom: '-200px' }} >

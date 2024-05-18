@@ -9,8 +9,9 @@ import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { CartContext } from '../../Context/CartContext.jsx';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import NotFound from '../../Components/NotFound/NotFound.jsx';
 
-export default function ProductDetails({logo}) {
+export default function ProductDetails({ logo }) {
 
     const [product, setProduct] = useState(null);
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
@@ -24,7 +25,9 @@ export default function ProductDetails({logo}) {
 
     const getProduct = async (productId) => {
         try {
-            const { data } = await axios.get(`/products/${productId}`);
+            const { data } = await axios.get(`/products/${productId}`).catch((err) => {
+                setStatusError(err.response.data.message);
+            });
             if (data.message === "success") {
                 setProduct(data.product);
             }
@@ -91,7 +94,7 @@ export default function ProductDetails({logo}) {
                 toast.error('Already Review');
             }
             else {
-                toast.error('Cant add Review');
+                toast.error('Can not add Review');
             }
         })
         if (data.message === "success") {
@@ -109,8 +112,7 @@ export default function ProductDetails({logo}) {
     }
     useEffect(() => {
         getProduct(location.state.productId);
-    }
-        , []);
+    } , []);
 
     return (
         <> {/*== Start Product Details Area Wrapper ==*/}
@@ -121,14 +123,14 @@ export default function ProductDetails({logo}) {
             </Helmet>
             < section className="section-space" >
                 <div className="container">
-                    {!product ? (
+                    {statusError?.includes('product not found') ? <NotFound title={'Product Not Found'} titlePage={'Products'} goTO={'/Products'} /> : <> {!product ? (
                         <Loading margin={100} height={500} fontSize={70} />
                     ) : <>
                         <div className="row product-details">
                             <div className="col-lg-6">
                                 <div className="product-details-thumb">
                                     <img src={product.mainImage.secure_url} width={570} height={693} alt="Image" />
-                                    {isCreatedThisMonth(product.createdAt) && (<span className="flag-new">new</span>)}
+                                    {isCreatedThisMonth(product.createdAt) && (<span className="flag-new bg-danger">new</span>)}
                                 </div>
                             </div>
                             <div className="col-lg-6">
@@ -148,7 +150,7 @@ export default function ProductDetails({logo}) {
                                     <div className="product-details-qty-list">
                                         <div className="qty-list-check">
                                             <input className="form-check-input" type="radio" name="flexRadioDefault" id="qtyList1" defaultChecked />
-                                            <label className="form-check-label" htmlFor="qtyList1">{product.size} ml bottol </label>
+                                            <label className="form-check-label" htmlFor="qtyList1">{product.size=='OneSize'?product.size:`${product.size} ml bottol` } </label>
                                         </div>
                                     </div>
                                     <div className="product-details-pro-qty">
@@ -217,7 +219,7 @@ export default function ProductDetails({logo}) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-5" style={{ marginTop: "-200px" }}>
+                            <div className="col-lg-5" style={{ marginTop: "-50px" }}>
                                 <div className="product-reviews-form-wrap">
                                     <h4 className="product-form-title">Leave a replay</h4>
                                     <div className="product-reviews-form">
@@ -250,6 +252,7 @@ export default function ProductDetails({logo}) {
                                                     </div>
                                                 </div>
                                                 {formik.errors.rating ? <p className="alert alert-danger mt-2">{formik.errors.rating}</p> : ""}
+                                                {statusError? <p className="alert alert-danger mt-2">{statusError}</p> : ""}
                                             </div>
                                             <div className="form-input-item mb-0">
                                                 <button type="submit" className="btn" >add review</button>
@@ -258,7 +261,9 @@ export default function ProductDetails({logo}) {
                                     </div>
                                 </div>
                             </div>
-                        </div></>}
+                        </div></>}</>
+
+                    }
                 </div>
             </section >
             {/*== End Product Details Area Wrapper ==*/}

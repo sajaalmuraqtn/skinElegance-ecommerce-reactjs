@@ -82,7 +82,7 @@ export default function ProductComponent({ product }) {
                         <div class="reviews">{product.reviews?.length} reviews</div>
 
                     </div>
-                    <h4 className="title text-capitalize"><Link to={`/Products/${product.slug}`} state={{ productId: product._id }} >{product.name}</Link></h4>
+                    <h4 className="title text-capitalize"><Link to={`/Products/${product.slug}`} state={{ productId: product._id,slug:product.slug }} >{product?.name.split(' ').slice(0,4).join(' ')}</Link></h4>
                     <div className="prices">
                         <span className="price"> ₪{product.finalPrice}</span>
                         <span className="price-old text-danger fs-6">{product.price}</span>

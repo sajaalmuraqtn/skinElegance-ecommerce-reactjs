@@ -33,7 +33,7 @@ export default function ServiceDetails({logo}) {
     return (<>
         <Helmet>
             <meta charSet="utf-8" />
-            <title>SkinElegance|Services-{location.state.slug}</title>
+            <title>SkinElegance|Services-Details</title>
             <meta property="og:image" content={`${logo}`} />
         </Helmet>
         < section className="section-space" style={{ marginBottom: '-200px' }}>

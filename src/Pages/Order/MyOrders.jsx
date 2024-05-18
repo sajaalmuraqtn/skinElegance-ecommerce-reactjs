@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../Context/Auth.context.jsx';
+import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -34,6 +35,7 @@ export default function MyOrders({ logo }) {
             </Helmet>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space" style={{ marginBottom: '-50px' }}>
+            {    myOrders.length==0?<Loading margin={50} height={500} fontSize={70} />:
                 <div className="container">
                     <div className="shopping-wishlist-form table-responsive">
                         <table className="table text-center">
@@ -88,7 +90,7 @@ export default function MyOrders({ logo }) {
                         </table>
                     </div>
 
-                </div>
+                </div>}
             </section>
             {/*== End Product Area Wrapper ==*/}
 

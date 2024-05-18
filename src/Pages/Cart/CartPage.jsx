@@ -126,13 +126,13 @@ export default function CartPage({logo}) {
                                                 </td>
                                                 <td className="product-thumbnail">
                                                     <div className="thumb">
-                                                        <Link to={`/Products/${product.productSlug}`} state={{ productId: product.productId }}>
+                                                        <Link to={`/Products/${product.productSlug}`} state={{ productId: product.productId,slug:product.productSlug }}>
                                                             <img src={product.mainImage.secure_url} alt="Image-HasTech" />
                                                         </Link>
                                                     </div>
                                                 </td>
                                                 <td className="product-name">
-                                                    <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId }}>{product.productName}</Link>
+                                                    <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId ,slug:product.productSlug }}>{product.productName}</Link>
                                                 </td>
                                                 <td className="product-quantity">
                                                     <div className="pro-qty">

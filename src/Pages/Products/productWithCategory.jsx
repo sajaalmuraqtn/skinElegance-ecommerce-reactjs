@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
 import Categories from '../../Components/Categories/categories.jsx';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import ProductComponent from '../../Components/Product/product.component.jsx';
@@ -10,18 +10,17 @@ import CategoryComponent from '../../Components/Categories/categoryComponent.jsx
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 
-export default function ProductWithCategory({logo}) {
+export default function ProductWithCategory({ logo }) {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const pageFromURL = queryParams.get('page');
+  const [searchParams] = useSearchParams();
+  const pageFromURL = searchParams.get('page');
   const [page, setPage] = useState(parseInt(pageFromURL) || 1);
   const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext);
-  const { getProducts, products, setProducts } = useContext(ProductApiContext);
+  const { getProducts, products, getSearchProducts } = useContext(ProductApiContext);
   const navigate = useNavigate();
-
   const [totalPages, setTotalPages] = useState(0);
-
   const [categories, setCategories] = useState([]);
+  const [params, setParams] = useSearchParams();
 
   const chunkArray = (array, size) => {
     const chunkedArr = [];
@@ -30,6 +29,7 @@ export default function ProductWithCategory({logo}) {
     }
     return chunkedArr;
   };
+
   const getCategory = async () => {
     try {
       let url = `/catagories/active`;
@@ -41,20 +41,40 @@ export default function ProductWithCategory({logo}) {
       console.log(error);
     }
   };
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setPage(1); // Reset page to 1 when performing a new search
+    setParams({ query }); // Update URL query parameters with the new search query
+  };
+
   useEffect(() => {
-    getCategory()
-    if (location.state) {
-      getProducts(page, `category/${location.state.categoryId}`)
-        .then(data => {
-          const totalPages = Math.ceil(data.total / 9);
+    getCategory();
+    const searchQuery = params.get('query'); // Get the search query from URL parameters
+    if (searchQuery) {
+      getSearchProducts(page, `category/${location.state.categoryId}`, searchQuery).then(data => {
+        if (data && data.total) {
+          const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
           setTotalPages(totalPages);
-        })
-        .catch(error => {
+        } else {
+          console.error('Invalid response data:', data);
+        }
+      }).catch(error => {
+        console.error('Error fetching products:', error);
+      });
+    } else {
+      getProducts(page, `category/${location.state.categoryId}`).then(data => {
+          if (data && data.total) {
+            const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
+            setTotalPages(totalPages);
+          } else {
+            console.error('Invalid response data:', data);
+          }
+        }).catch(error => {
           console.error('Error fetching products:', error);
         });
     }
-  }, [location, page]);
-
+  }, [location, page, params]);
 
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
@@ -123,7 +143,31 @@ export default function ProductWithCategory({logo}) {
             )}
           </div>
         </section>
-        <section className="page-header-area" data-bg-color="#FFF3DA" style={{ marginTop: '-80px' }}>
+        <div className="page-header-area">
+          <div className="container">
+            <div className="shop-top-bar">
+              <div className="select-price-range">
+                <input
+                  value={params.get('query') || ''}
+                  onChange={handleSearch}
+                  className="search form-control"
+                  type="search"
+                  name="search"
+                  placeholder='Search on Products'
+                />
+              </div>
+
+              <div className="select-on-sale d-none d-md-flex">
+                <span>On Sale :</span>
+                <select className="select-on-sale-form">
+                  <option selected>Yes</option>
+                  <option value="1">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section className="page-header-area" data-bg-color="#FFF3DA" style={{ marginTop: '-50px' }}>
           <div className="container">
             <div className="page-header-st3-content mt-10">
               <h2 className="page-header-title text-Capitalize">{location.state.categoryName}</h2>
