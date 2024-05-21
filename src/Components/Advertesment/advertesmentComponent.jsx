@@ -14,9 +14,10 @@ export default function AdvertisementComponent({ advertisement }) {
                     <img src={advertisement.mainImage.secure_url} width={370} height={450} alt="Image-HasTech" />
 
                 </Link>
+                
                 <div className="content">
                     <span className="post-category" style={{ backgroundColor: selectRandomColor(),cursor:'pointer' }}>{advertisement.city}</span>
-                    <h4 className="title"><Link to={`/Advertisements/${advertisement.slug}`} state={{ advertisementId: advertisement._id,slug:advertisement.slug }} >{advertisement?.name.split(' ').slice(0,3).join(' ')}</Link></h4>
+                    <h4 className="title text-capitalize"><Link to={`/Advertisements/${advertisement.slug}`} state={{ advertisementId: advertisement._id,slug:advertisement.slug }} >{advertisement?.name.split(' ').slice(0,3).join(' ')}</Link></h4>
                     <ul class="meta">
                         <li class="post-date fs-6">
                             <i class="fa-solid fa-phone fs-6" style={{ color: '#3ee302',marginRight:'5px' }}></i>

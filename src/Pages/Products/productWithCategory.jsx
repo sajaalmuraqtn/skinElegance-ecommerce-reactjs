@@ -124,8 +124,9 @@ export default function ProductWithCategory({ logo }) {
                     </div>
                   ))}
                 </div>
-
-                <div className="col-12">
+                      
+              { categories.length>6? 
+              <div className="col-12">
                   <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-sm-10">
                     <li className="page-item">
                       <a className="page-link previous" href='#carouselExampleFade4' role="button" data-bs-slide="prev">
@@ -138,14 +139,14 @@ export default function ProductWithCategory({ logo }) {
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div>:''}
               </div>
             )}
           </div>
         </section>
         <div className="page-header-area">
           <div className="container">
-            <div className="shop-top-bar">
+            {/* <div className="shop-top-bar">
               <div className="select-price-range">
                 <input
                   value={params.get('query') || ''}
@@ -164,7 +165,7 @@ export default function ProductWithCategory({ logo }) {
                   <option value="1">No</option>
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <section className="page-header-area" data-bg-color="#FFF3DA" style={{ marginTop: '-50px' }}>
@@ -187,7 +188,7 @@ export default function ProductWithCategory({ logo }) {
                     ))}
                   </>
                 )}
-                <div className="col-12">
+                {/* <div className="col-12">
                   <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                     <li className="page-item">
                       <a className="page-link previous" aria-label="Previous">
@@ -201,7 +202,7 @@ export default function ProductWithCategory({ logo }) {
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </>
 
             </div>

@@ -52,7 +52,8 @@ export default function Navbar({ logo, user, LogOut }) {
                               <span className='text-capitalize' style={{color: location.pathname === '/Profile' ? '#ff6565':'black' }}>{user.userName}</span>
                             </Link>
                           </div>
-                        </div> <div className="header-action-btn-container">
+                        </div> 
+                        <div className="header-action-btn-container">
                           <button className="header-action-btn" onClick={() => LogOut()}>
                             <i className="fa fa-arrow-right-from-bracket mb-3" style={{ color: '#000000', fontSize: '30px' }}></i>
                           </button>

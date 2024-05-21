@@ -124,7 +124,7 @@ export default function Product({ logo }) {
                   ))}
                 </div>
 
-                <div className="col-12">
+               {categories.length>6? <div className="col-12">
                   <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                     <li className="page-item">
                       <a className="page-link previous" href='#carouselExampleFade5' role="button" data-bs-slide="prev">
@@ -137,7 +137,7 @@ export default function Product({ logo }) {
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div>:''}
               </div>
             )}
           </div>
@@ -153,7 +153,7 @@ export default function Product({ logo }) {
                   className="search form-control"
                   type="search"
                   name="search"
-                  placeholder='Search on Products'
+                  placeholder='Search on Products (title, description ,....)'
                 />
               </div>
 
@@ -182,7 +182,7 @@ export default function Product({ logo }) {
           <div className="container">
             <div className="row mb-n4 mb-sm-n10 g-3 g-sm-6">
               {/*== Start Product Item ==*/}
-              {products?.length === 0 ? (
+              {(!params.get('query')&&products?.length==0)?(
                 <Loading margin={100} height={200} fontSize={70} />
               ) : (
                 products.map((product) => (
@@ -190,7 +190,7 @@ export default function Product({ logo }) {
                 ))
               )}
               {/*== End Product Item ==*/}
-              {totalPages > 1 && (
+              {/* {totalPages > 1 && (
                 <div className="col-12">
                   <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                     <li className="page-item">
@@ -206,7 +206,7 @@ export default function Product({ logo }) {
                     </li>
                   </ul>
                 </div>
-              )}
+              )} */}
               {/*== Pagination ==*/}
             </div>
           </div>

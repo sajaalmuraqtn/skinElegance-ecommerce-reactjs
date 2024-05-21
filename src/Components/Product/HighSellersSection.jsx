@@ -3,14 +3,14 @@ import ProductComponent from './product.component.jsx'
 import Loading from '../Loading/Loading.jsx'
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 
-export default function LatestNewProduct() {
+export default function HighSellersProduct() {
 
-  const { getProducts, products, setProducts } = useContext(ProductApiContext);
+  const { getProducts, products } = useContext(ProductApiContext);
   
   useEffect(() => {
+    getProducts(1, 'allProducts/active?limit=6&sort=-number_sellers');
+   }, []);
 
-    getProducts(1, 'allProducts/active?limit=6&sort=-createdAt');
-   }, []); 
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function LatestNewProduct() {
           <div className="row">
             <div className="col-12">
               <div className="section-title text-center">
-                <h2 className="title text-capitalize">latest new</h2>
+                <h2 className="title text-capitalize">High Sellers</h2>
                 <p>Transform your beauty routine into a ritual of self-care with our enchanting selection of skincare treasures</p>
 
               </div>

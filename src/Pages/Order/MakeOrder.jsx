@@ -10,7 +10,7 @@ import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import { Helmet } from 'react-helmet';
 
-export default function MakeOrder({logo}) {
+export default function MakeOrder({ logo }) {
     let [errors, setErrors] = useState([]);
     let [statusError, setStatusError] = useState('');
     let navigate = useNavigate();
@@ -66,6 +66,9 @@ export default function MakeOrder({logo}) {
     };
     async function sendOrderData(values) {
         const token = localStorage.getItem('userToken');
+        if (values.couponName === '') {
+            values.couponName = 'couponName';
+        }
         if (values.note === '') {
             values.note = '----------';
         }
@@ -85,7 +88,7 @@ export default function MakeOrder({logo}) {
             toast.success('Order Made successfully!');
             setStatusError('');
             setErrors([]);
-            console.log(data);
+            navigate('/MyOrders')
         } else {
             setErrors(data.validationError);
         }
@@ -180,9 +183,10 @@ export default function MakeOrder({logo}) {
                                                     <label htmlFor="order-couponName">Coupon <abbr className="required" title="required">*</abbr></label>
 
                                                     <select id="order-couponName" name="couponName" value={formik.values.couponName} onChange={formik.handleChange} className="form-control wide">
+                                                    <option>Select Coupon</option>
                                                         {coupons?.map((coupon) => (
                                                             <option key={coupon._id} value={coupon.name}>
-                                                                {coupon.name}
+                                                                {coupon.name}| {coupon.amount}%
                                                             </option>
                                                         ))}
                                                     </select>
@@ -191,6 +195,7 @@ export default function MakeOrder({logo}) {
 
                                             </div>
                                         </div>
+                                        {(statusError && statusError.includes('product')) ? <p className="alert alert-danger mt-2">{statusError}</p> : ''}
 
                                     </form>
                                 </div>

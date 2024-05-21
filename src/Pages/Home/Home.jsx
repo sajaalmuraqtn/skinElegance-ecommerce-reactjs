@@ -9,6 +9,7 @@ import Loading from '../../Components/Loading/Loading.jsx'
 import axios from 'axios'
 import LatestNewAdvertisements from '../../Components/Advertesment/latestAdvertesment.jsx'
 import { Helmet } from 'react-helmet'
+import HighSellersProduct from '../../Components/Product/HighSellersSection.jsx'
 export default function Home({logo}) {
 
   const [categories, setCategories] = useState([]);
@@ -61,6 +62,7 @@ export default function Home({logo}) {
                 ))}
               </div>
 
+              {categories.length>6?
               <div className="col-12">
                 <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                   <li className="page-item">
@@ -74,13 +76,14 @@ export default function Home({logo}) {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div>:''}
             </div>
           )}
         </div>
       </section>
       <LatestNewAdvertisements />
       <LatestNewProduct />
+      <HighSellersProduct/>
       <CouponSection />
     </>
   )

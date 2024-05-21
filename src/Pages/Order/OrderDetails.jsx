@@ -71,7 +71,7 @@ export default function OrderDetails({logo}) {
                     <tr className="tbody-item" key={product.productId}>
 
                       <td className="product-name">
-                        <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId,slug:product.slug }}>{product.name}</Link>
+                        <Link className="title text-capitalize fs-5" to={`/Products/${product.slug}`} state={{ productId: product.productId,slug:product.slug }}>{product.name}</Link>
                       </td>
                       <td className="product-subtotal">
                         <span className="price">₪{product.unitPrice}</span>
