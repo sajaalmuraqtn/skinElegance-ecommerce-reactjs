@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 
-export default function CartPage({logo}) {
+export default function CartPage() {
 
     const { user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
@@ -92,7 +92,6 @@ export default function CartPage({logo}) {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>SkinElegance|Cart</title>
-                <meta property="og:image" content={`${logo}`} />
             </Helmet>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space">

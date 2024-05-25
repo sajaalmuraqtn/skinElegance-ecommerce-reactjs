@@ -10,7 +10,7 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
-export default function UpdateProfile({logo}) {
+export default function UpdateProfile() {
   // Use array destructuring to get the state variable and the function to update it
   const { saveCurrentUser } = useContext(AuthContext);
 
@@ -103,7 +103,6 @@ export default function UpdateProfile({logo}) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance|UpdateProfile</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <main className="main-content pb-10 container">
         {/*== Start Product Category Area Wrapper ==*/}

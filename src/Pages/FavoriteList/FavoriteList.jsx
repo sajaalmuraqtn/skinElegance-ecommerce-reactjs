@@ -9,7 +9,7 @@ import { CartContext } from '../../Context/CartContext.jsx';
 import { Helmet } from 'react-helmet';
 import Loading from '../../Components/Loading/Loading.jsx';
 
-export default function FavoriteList({ logo }) {
+export default function FavoriteList() {
     const { user } = useContext(AuthContext);
     const { isEmpty, favoriteList, getFavoriteList } = useContext(ProductApiContext)
     const { getCart, cart } = useContext(CartContext);
@@ -77,7 +77,6 @@ export default function FavoriteList({ logo }) {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>SkinElegance|FavoriteList</title>
-                <meta property="og:image" content={`${logo}`} />
             </Helmet>
             <main className="main-content">
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { Helmet } from 'react-helmet';
 
-export default function OrderDetails({logo}) {
+export default function OrderDetails() {
   const [products, setProducts] = useState(null);
   const [order, setOrder] = useState(null);
   const { addToFavoriteList } = useContext(ProductApiContext);
@@ -41,7 +41,6 @@ export default function OrderDetails({logo}) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance|Orders-OrderDetails</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       {/*== Start Product Area Wrapper ==*/}
       <section className="section-space" style={{ marginBottom: '-60px' }}>

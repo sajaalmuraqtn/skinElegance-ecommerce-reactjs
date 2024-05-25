@@ -10,7 +10,7 @@ import axios from 'axios'
 import LatestNewAdvertisements from '../../Components/Advertesment/latestAdvertesment.jsx'
 import { Helmet } from 'react-helmet'
 import HighSellersProduct from '../../Components/Product/HighSellersSection.jsx'
-export default function Home({logo}) {
+export default function Home() {
 
   const [categories, setCategories] = useState([]);
 
@@ -40,7 +40,6 @@ export default function Home({logo}) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance|Home</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <HomeContent />
       <section className="section-space" >

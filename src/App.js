@@ -50,7 +50,6 @@ import CancelOrder from './Pages/Order/cancelOrder.jsx';
 import AdvertisementDetails from './Pages/Advertesment/AdvertesmentDetails.page.jsx';
 import ServiceDetails from './Pages/Advertesment/ServiceDetails.jsx';
 import Advertisements from './Pages/Advertesment/Advertesment.page.jsx';
-import logo from '../src/assets/logo.png'
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 
@@ -58,27 +57,27 @@ function App() {
 
   let routes = createBrowserRouter([{
     path: '', element: <AuthContextProvider> <Layout /> </AuthContextProvider>, children: [
-      { index: true, element: <ProductApiContextProvider><Home  logo={logo}/> </ProductApiContextProvider> },
-      { path: 'Products', element: <ProductApiContextProvider><Product logo={logo} /></ProductApiContextProvider>, },
-      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory logo={logo} /></ProductApiContextProvider>, },
-      { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails logo={logo} /></ProductApiContextProvider> },
-      { path: 'Advertisements', element: <Advertisements  logo={logo}/>},
-      { path: "Advertisements/:advertisementId", element: <AdvertisementDetails logo={logo} />},
-      { path: "Advertisements/:advertisementId/:serviceId",element:<ServiceDetails logo={logo}/>},
-      { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders  logo={logo}/></ProtectedRouter></AuthContextProvider> },
-      { path: 'MyOrders/Cancel', element: <ProductApiContextProvider><ProtectedRouter><CancelOrder logo={logo} /></ProtectedRouter></ProductApiContextProvider> },
-      { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails logo={logo} /></ProtectedRouter></ProductApiContextProvider> },
-      { path: 'MyOrders/CancelOrder', element:<ProtectedRouter><CancelOrder logo={logo} /></ProtectedRouter>},
-      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList  logo={logo}/></ProtectedRouter> </ProductApiContextProvider> },
-      { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'Profile', element: <AuthContextProvider><ProtectedRouter><Profile logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'UpdateProfile', element: <AuthContextProvider><ProtectedRouter><UpdateProfile logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword logo={logo} /></AuthContextProvider> },
-      { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword logo={logo} /></ProtectedRouter></AuthContextProvider> },
-      { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword logo={logo}/></AuthContextProvider> },
-      { path: 'SetCode', element: <AuthContextProvider><SetCode logo={logo} /></AuthContextProvider> },
+      { index: true, element: <ProductApiContextProvider><Home  /> </ProductApiContextProvider> },
+      { path: 'Products', element: <ProductApiContextProvider><Product  /></ProductApiContextProvider>, },
+      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory  /></ProductApiContextProvider>, },
+      { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails  /></ProductApiContextProvider> },
+      { path: 'Advertisements', element: <Advertisements  />},
+      { path: "Advertisements/:advertisementId", element: <AdvertisementDetails  />},
+      { path: "Advertisements/:advertisementId/:serviceId",element:<ServiceDetails />},
+      { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
+      { path: 'MyOrders/Cancel', element: <ProductApiContextProvider><ProtectedRouter><CancelOrder /></ProtectedRouter></ProductApiContextProvider> },
+      { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></ProductApiContextProvider> },
+      { path: 'MyOrders/CancelOrder', element:<ProtectedRouter><CancelOrder /></ProtectedRouter>},
+      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
+      { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
+      { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder /></ProtectedRouter></AuthContextProvider> },
+      { path: 'Profile', element: <AuthContextProvider><ProtectedRouter><Profile/></ProtectedRouter></AuthContextProvider> },
+      { path: 'UpdateProfile', element: <AuthContextProvider><ProtectedRouter><UpdateProfile  /></ProtectedRouter></AuthContextProvider> },
+      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage  /></ProtectedRouter></AuthContextProvider> },
+      { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword  /></AuthContextProvider> },
+      { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword /></ProtectedRouter></AuthContextProvider> },
+      { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword /></AuthContextProvider> },
+      { path: 'SetCode', element: <AuthContextProvider><SetCode  /></AuthContextProvider> },
       { path: 'Login', element: <Login /> },
       { path: 'Register', element: <AuthContextProvider> <Register /></AuthContextProvider> },
       { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },

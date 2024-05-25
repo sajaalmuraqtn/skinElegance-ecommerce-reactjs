@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
 
-export default function ProductDetails({ logo }) {
+export default function ProductDetails() {
 
     const [product, setProduct] = useState(null);
     const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext); // Access the context
@@ -119,7 +119,6 @@ export default function ProductDetails({ logo }) {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>SkinElegance|Products-{location.state.slug}</title>
-                <meta property="og:image" content={`${logo}`} />
             </Helmet>
             < section className="section-space" >
                 <div className="container">

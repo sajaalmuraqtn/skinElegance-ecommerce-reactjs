@@ -7,7 +7,7 @@ import ProductComponent from '../../Components/Product/product.component.jsx';
 import CategoryComponent from '../../Components/Categories/categoryComponent.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 
-export default function Product({ logo }) {
+export default function Product() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [page, setPage] = useState(1);
@@ -78,7 +78,6 @@ export default function Product({ logo }) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance | Products</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <main className="main-content">
         {/*== Start Product Category Area Wrapper ==*/}

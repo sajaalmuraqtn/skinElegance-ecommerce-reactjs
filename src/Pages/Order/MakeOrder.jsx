@@ -10,7 +10,7 @@ import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import { Helmet } from 'react-helmet';
 
-export default function MakeOrder({ logo }) {
+export default function MakeOrder() {
     let [errors, setErrors] = useState([]);
     let [statusError, setStatusError] = useState('');
     let navigate = useNavigate();
@@ -106,7 +106,6 @@ export default function MakeOrder({ logo }) {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>SkinElegance|MakeOrder</title>
-                <meta property="og:image" content={`${logo}`} />
             </Helmet>
             {/*== Start Shopping Checkout Area Wrapper ==*/}
             <section className="shopping-checkout-wrap section-space">

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-export default function MyOrders({ logo }) {
+export default function MyOrders() {
     const [myOrders, setMyOrders] = useState([]);
 
     const getMyOrders = async () => {
@@ -31,7 +31,6 @@ export default function MyOrders({ logo }) {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>SkinElegance|Orders</title>
-                <meta property="og:image" content={`${logo}`} />
             </Helmet>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space" style={{ marginBottom: '-50px' }}>

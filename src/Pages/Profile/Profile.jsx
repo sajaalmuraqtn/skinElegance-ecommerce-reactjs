@@ -5,7 +5,7 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-export default function Profile({logo}) {
+export default function Profile() {
 
   const { getProfile, user } = useContext(AuthContext);
 
@@ -18,7 +18,6 @@ export default function Profile({logo}) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance|Profile</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <main className="main-content pt-10 pb-10 container" style={{ height: "100vh" }}>
         {!user ? <Loading fontSize={70} height={500} />

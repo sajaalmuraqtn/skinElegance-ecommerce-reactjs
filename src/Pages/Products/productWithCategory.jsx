@@ -10,7 +10,7 @@ import CategoryComponent from '../../Components/Categories/categoryComponent.jsx
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 
-export default function ProductWithCategory({ logo }) {
+export default function ProductWithCategory() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const pageFromURL = searchParams.get('page');
@@ -95,7 +95,6 @@ export default function ProductWithCategory({ logo }) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>SkinElegance|CategoryProducts-{location.state.slug}</title>
-        <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <main className="main-content" style={{ marginBottom: '-70px' }}>
         <section className="page-header-area pt-10" data-bg-color="#FFF3DA">

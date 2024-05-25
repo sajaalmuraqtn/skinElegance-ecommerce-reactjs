@@ -4,9 +4,8 @@ import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
-import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
-export default function ServiceDetails({logo}) {
+export default function ServiceDetails() {
     const location = useLocation();
     let navigate = useNavigate();
     const { isCreatedThisMonth } = useContext(GlobalFunctionContext); // Access the context
@@ -34,7 +33,6 @@ export default function ServiceDetails({logo}) {
         <Helmet>
             <meta charSet="utf-8" />
             <title>SkinElegance|Services-Details</title>
-            <meta property="og:image" content={`${logo}`} />
         </Helmet>
         < section className="section-space" style={{ marginBottom: '-200px' }}>
             <div className="container">
