@@ -10,8 +10,7 @@ import { ProductApiContext } from '../../Context/productApiContext.jsx';
 export default function Product({ logo }) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const pageFromURL = queryParams.get('page');
-  const [page, setPage] = useState(parseInt(pageFromURL) || 1);
+  const [page, setPage] = useState(1);
   const [categories, setCategories] = useState([]);
   const { getProducts, products = [], getSearchProducts, statusError } = useContext(ProductApiContext);
   const navigate = useNavigate();
@@ -24,11 +23,6 @@ export default function Product({ logo }) {
     setParams({ query }); // Update URL query parameters with the new search query
   };
 
-  const handlePageChange = (pageNumber) => {
-    setPage(pageNumber);
-    const searchQuery = params.get('query');
-    navigate(`?page=${pageNumber}${searchQuery ? `&query=${searchQuery}` : ''}`);
-  };
 
   const chunkArray = (array, size) => {
     const chunkedArr = [];
@@ -65,7 +59,7 @@ export default function Product({ logo }) {
         console.error('Error fetching products:', error);
       });
     } else {
-      getProducts(page, 'allProducts/active').then(data => {
+      getProducts(page, 'allProducts/active?limit=9').then(data => {
         if (data && data.total) {
           const totalPages = Math.ceil(data.total / itemsPerPage);
           setTotalPages(totalPages);
@@ -78,25 +72,15 @@ export default function Product({ logo }) {
     }
   }, [page, params]);
 
-  // Generate pagination buttons dynamically
-  const paginationButtons = [];
-  for (let i = 1; i <= totalPages; i++) {
-    paginationButtons.push(
-      <li className="page-item" key={i}>
-        <a className="page-link" onClick={() => handlePageChange(i)}>{i}</a>
-      </li>
-    );
-  }
 
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>SkinElegance|Products</title>
+        <title>SkinElegance | Products</title>
         <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <main className="main-content">
-
         {/*== Start Product Category Area Wrapper ==*/}
         <section className="page-header-area pt-10" data-bg-color="#FFF3DA">
           <div className="container">
@@ -106,12 +90,12 @@ export default function Product({ logo }) {
           </div>
         </section>
         {/*== End Page Header Area Wrapper ==*/}
-        <section className="section-space" style={{ marginBottom: `-100px`, marginTop: `-40px` }}>
+        <section className="section-space" style={{ marginBottom: '-100px', marginTop: '-40px' }}>
           <div className="container">
             {categories?.length === 0 ? (
               <Loading margin={100} height={200} fontSize={70} />
             ) : (
-              <div id='carouselExampleFade5' className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+              <div id="carouselExampleFade5" className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
                 <div className="carousel-inner">
                   {chunkArray(categories, 6).map((chunk, index) => (
                     <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
@@ -124,20 +108,22 @@ export default function Product({ logo }) {
                   ))}
                 </div>
 
-               {categories.length>6? <div className="col-12">
-                  <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
-                    <li className="page-item">
-                      <a className="page-link previous" href='#carouselExampleFade5' role="button" data-bs-slide="prev">
-                        <span className="fa fa-chevron-left" aria-hidden="true" />
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link next" href='#carouselExampleFade5' role="button" data-bs-slide="next">
-                        <span className="fa fa-chevron-right" aria-hidden="true" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>:''}
+                {categories.length > 6 && (
+                  <div className="col-12">
+                    <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
+                      <li className="page-item">
+                        <button className="page-link previous" href="#carouselExampleFade5" role="button" data-bs-slide="prev">
+                          <span className="fa fa-chevron-left" aria-hidden="true" />
+                        </button>
+                      </li>
+                      <li className="page-item">
+                        <button className="page-link next" href="#carouselExampleFade5" role="button" data-bs-slide="next">
+                          <span className="fa fa-chevron-right" aria-hidden="true" />
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -153,7 +139,7 @@ export default function Product({ logo }) {
                   className="search form-control"
                   type="search"
                   name="search"
-                  placeholder='Search on Products (title, description ,....)'
+                  placeholder="Search on Products (title, description ,...)"
                 />
               </div>
 
@@ -182,7 +168,7 @@ export default function Product({ logo }) {
           <div className="container">
             <div className="row mb-n4 mb-sm-n10 g-3 g-sm-6">
               {/*== Start Product Item ==*/}
-              {(!params.get('query')&&products?.length==0)?(
+              {(!params.get('query') && products?.length === 0) ? (
                 <Loading margin={100} height={200} fontSize={70} />
               ) : (
                 products.map((product) => (
@@ -190,23 +176,29 @@ export default function Product({ logo }) {
                 ))
               )}
               {/*== End Product Item ==*/}
-              {/* {totalPages > 1 && (
+              {totalPages > 1 && (
                 <div className="col-12">
                   <ul className="pagination justify-content-center me-auto ms-auto mt-5 mb-0 mb-sm-10">
                     <li className="page-item">
-                      <a className="page-link previous" onClick={() => handlePageChange(Math.max(page - 1, 1))} aria-label="Previous">
+                      <button
+                        className="page-link previous"
+                        aria-label="Previous"
+                      >
                         <span className="fa fa-chevron-left" aria-hidden="true" />
-                      </a>
+                      </button>
                     </li>
-                    {paginationButtons}
+                    <button className="page-link" onClick={() =>setPage(1)}>1</button>
                     <li className="page-item">
-                      <a className="page-link next" onClick={() => handlePageChange(Math.min(page + 1, totalPages))} aria-label="Next">
-                        <span className="fa fa-chevron-right" aria-hidden="true" />
-                      </a>
+                      <button
+                        className="page-link next"
+                        aria-label="Next"
+                      >
+                        <span className="fa fa-chevron-right " aria-hidden="true" />
+                      </button>
                     </li>
                   </ul>
                 </div>
-              )} */}
+              )}
               {/*== Pagination ==*/}
             </div>
           </div>

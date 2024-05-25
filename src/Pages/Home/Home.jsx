@@ -43,7 +43,7 @@ export default function Home({logo}) {
         <meta property="og:image" content={`${logo}`} />
       </Helmet>
       <HomeContent />
-      <section className="section-space" style={{ marginBottom: `-130px` }}>
+      <section className="section-space" >
         <div className="container">
           {categories?.length === 0 ? (
             <Loading margin={100} height={200} fontSize={70} />

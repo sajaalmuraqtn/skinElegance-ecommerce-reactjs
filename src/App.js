@@ -50,7 +50,7 @@ import CancelOrder from './Pages/Order/cancelOrder.jsx';
 import AdvertisementDetails from './Pages/Advertesment/AdvertesmentDetails.page.jsx';
 import ServiceDetails from './Pages/Advertesment/ServiceDetails.jsx';
 import Advertisements from './Pages/Advertesment/Advertesment.page.jsx';
-import logo from '../src/assets/images/logo.webp'
+import logo from '../src/assets/logo.png'
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 

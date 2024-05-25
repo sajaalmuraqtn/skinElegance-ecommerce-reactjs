@@ -11,7 +11,7 @@ import { AuthContextProvider } from './Context/Auth.context.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-       <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.webp" />
+       <link rel="shortcut icon" type="image/x-icon" href="../src/assets/logo.png" />
        <ToastContainer />
 
 {/* Font CSS */}

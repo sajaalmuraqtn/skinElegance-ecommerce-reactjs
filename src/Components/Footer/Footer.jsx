@@ -1,19 +1,21 @@
 import React from 'react'
- export default function Footer({logo}) {
+import { Link } from 'react-router-dom'
+import logo from '../../assets/home.png';
+
+ export default function Footer() {
   return (
     < >  {/*== Start Footer Area Wrapper ==*/}
-<footer className="footer-area mt-5">
+<footer className="footer-area mt-5" >
   {/*== Start Footer Main ==*/}
-  <div className="footer-main">
+  <div className="footer-main"  >
     <div className="container">
       <div className="row">
-        <div className="col-md-6 col-lg-4">
+        <div className="col-md-6 col-lg-4 " style={{marginTop: '-50px',marginBottom: '-50px'}}>
           <div className="widget-item">
             <div className="widget-about">
-              <a className="widget-logo" href="index.html">
-                 <img  src={logo} width={95} height={68} alt="Logo" />
-              </a>
-              <p className="desc">Redefining Beauty Through Care Products</p>
+              <Link className="widget-logo" to={''}>
+                 <img  src={logo} width={250} alt="Logo" />
+              </Link>
             </div>
           </div>
         </div>

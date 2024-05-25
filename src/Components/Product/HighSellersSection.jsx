@@ -9,6 +9,7 @@ export default function HighSellersProduct() {
   
   useEffect(() => {
     getProducts(1, 'allProducts/active?limit=6&sort=-number_sellers');
+    console.log(products);
    }, []);
 
 

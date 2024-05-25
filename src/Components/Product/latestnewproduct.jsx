@@ -1,11 +1,24 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ProductComponent from './product.component.jsx'
 import Loading from '../Loading/Loading.jsx'
-import { ProductApiContext } from '../../Context/productApiContext.jsx';
+import axios from 'axios';
 
 export default function LatestNewProduct() {
 
-  const { getProducts, products, setProducts } = useContext(ProductApiContext);
+  const [products, setProducts] = useState([]);
+  const getProducts = async (page, urlProduct) => {
+    try {
+      const separator = urlProduct.includes('?') ? '&' : '?'; // to put the sort and other filters method
+      const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}`);
+      console.log(data);
+      if (data.message === "success") {
+        setProducts(data.products);
+        console.log(products);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };  
   
   useEffect(() => {
 

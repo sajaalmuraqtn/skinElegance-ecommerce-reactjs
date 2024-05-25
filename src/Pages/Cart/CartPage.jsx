@@ -96,7 +96,7 @@ export default function CartPage({logo}) {
             </Helmet>
             {/*== Start Product Area Wrapper ==*/}
             <section className="section-space">
-                {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> :
+                {isEmpty ? <NotFound title={'You don`t Product in your Cart'} height={'10vh'} marginBottom={'-80px'} titlePage={'Products'} goTO={'/Products'} /> :
                     <> <div className="container">
                         <div className='row mt-3 mb-5'>
                             <div className="col-md-1">
