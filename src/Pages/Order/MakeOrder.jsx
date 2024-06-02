@@ -12,24 +12,27 @@ import { Helmet } from 'react-helmet';
 
 export default function MakeOrder() {
     let [errors, setErrors] = useState([]);
-    let [statusError, setStatusError] = useState('');
+     let [statusError, setStatusError] = useState('');
     let navigate = useNavigate();
     const [coupons, setCoupons] = useState([]);
+    const [PaymentMethods, setPaymentMethods] = useState([]);
     const { getProfile, user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
-
+    const getPaymentMethods = async () => {
+             const token = localStorage.getItem('userToken'); 
+            let url = `/PaymentMethod/getPaymentMethods`;
+            const { data } = await axios.get(url, { headers: { authorization: `Saja__${token}` } }); 
+            if (data.message === "success") {
+                setPaymentMethods(data.PaymentMethods);
+             }
+     };
     const getCoupons = async () => {
-        try {
-            let url = `/coupon/active`;
+             let url = `/coupon/active`;
             const { data } = await axios.get(url);
 
             if (data.message === "success") {
                 setCoupons(data.coupons);
-                console.log(data.coupons); // Access the updated state directly here
-            }
-        } catch (error) {
-            console.log(error);
-        }
+             } 
     };
     // Define the validation schema using Yup
     const schema = Yup.object({
@@ -37,9 +40,10 @@ export default function MakeOrder() {
         lastName: Yup.string().required("Last Name is required").min(3, "Minimum characters is 3").max(15, "Maximum characters is 30"),
         note: Yup.string().min(10, "Minimum characters is 10").max(100, "Maximum characters is 100"),
         city: Yup.string().oneOf(['Hebron', 'Nablus', 'Jerusalem', 'Ramallah', 'Tulkarm', 'Jenin', 'Al-Bireh', 'Jericho', 'Yatta', 'Beit Jala'], "Invalid city").required("City is required"),
+        paymentType: Yup.string().oneOf(['visa', 'cash' ], "Invalid payment Type").required("Payment Type is required"), 
         couponName: Yup.string().min(3, "Minimum characters is 3").max(30, "Maximum characters is 30"),
         address: Yup.string().min(10, "Minimum characters is 10").max(100, "Maximum characters is 100"),
-        phoneNumber: Yup.string().length(10, "Phone number must be exactly 10 characters")
+        phoneNumber: Yup.string().length(10, "Phone number must be exactly 10 characters") 
     });
 
     const formik = useFormik({
@@ -50,7 +54,9 @@ export default function MakeOrder() {
             city: "",
             couponName: "",
             address: "",
-            phoneNumber: ""
+            phoneNumber: "",
+            paymentType:"" ,
+            cardId:"" 
         },
         onSubmit: sendOrderData,
         validationSchema: schema
@@ -68,21 +74,19 @@ export default function MakeOrder() {
         const token = localStorage.getItem('userToken');
         if (values.couponName === '') {
             values.couponName = 'couponName';
-        }
-        if (values.note === '') {
-            values.note = '----------';
-        }
+        } 
         if (values.phoneNumber === '') {
             values.phoneNumber = user.phoneNumber;
         }
         if (values.address === '') {
             values.address = user.address;
-        }
+        } 
+         
+        console.log(values);
         // Make the request to the server
         let { data } = await axios.post('/order', values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
             setStatusError(err.response.data.message);
-            console.error(err.response.data.message);
-        })
+         })
 
         if (data.message === "success") {
             toast.success('Order Made successfully!');
@@ -99,7 +103,7 @@ export default function MakeOrder() {
         getCoupons();
         getCart();
         getProfile();
-
+        getPaymentMethods();
     }, [])
     return (
         <>
@@ -109,7 +113,7 @@ export default function MakeOrder() {
             </Helmet>
             {/*== Start Shopping Checkout Area Wrapper ==*/}
             <section className="shopping-checkout-wrap section-space">
-                <div className="container">
+                <div className="container" style={{marginBottom:'-70px'}}>
                     {isEmpty ? <NotFound title={'You don`t Product in your Cart'} titlePage={'Products'} goTO={'/Products'} /> : <div className="row">
                         <div className="col-lg-6">
                             {/*== Start Billing Accordion ==*/}
@@ -154,6 +158,34 @@ export default function MakeOrder() {
                                             </div>
 
                                             <div className="col-md-12 mt-5">
+                                                    <div className="form-group">
+                                                        <label htmlFor="order-paymentType">Payment Type <abbr className="required" title="required">*</abbr></label>
+                                                        <select id="order-paymentType" name="paymentType" value={formik.values.paymentType} onChange={formik.handleChange} className="form-control wide">
+                                                            <option>Select Payment Type</option>
+                                                            <option value="visa">Visa</option>
+                                                            <option value="cash">Cash</option>
+                                                        </select>
+                                                        {formik.errors.paymentType ? <p className="alert alert-danger mt-2">{formik.errors.paymentType}</p> : ""}
+                                                    </div>
+                                                </div>
+
+                                                { formik.values.paymentType==='visa'?<div className="col-md-12 mt-5">
+                                                <div className="form-group">
+                                                    <label htmlFor="order-cardId">Card<abbr className="required" title="required">*</abbr></label>
+                                                    <select id="order-cardId" name="cardId" value={formik.values.cardId} onChange={formik.handleChange}  className="form-control wide">
+                                                        <option>Select visa</option>
+                                                        {PaymentMethods.length!==0? 
+                                                          <> { PaymentMethods.map((PaymentMethod) => {
+                                                                return <option value={PaymentMethod._id} > {PaymentMethod.cardDetails.cardNumber}  /EXP:  {PaymentMethod.cardDetails.expiryDate}  </option>
+                                                            })}</> :<></>
+                                                        } 
+                                                     </select>
+                                                    {formik.values.cardId==="" ? <p className="alert alert-danger mt-2">Card id required</p> : ""}
+                                                </div>
+                                                <Link className='btn' to={'/AddPaymentMethod'} style={{ fontSize: '10px' }}>Add Payment </Link>
+                                            </div>:<></> }
+
+                                            <div className="col-md-12 mt-5">
                                                 <div className="form-group">
                                                     <label htmlFor="street-address">Street address (optional) <abbr className="required" title="required">*</abbr></label>
                                                     <input type="text" id="street-address" name="address" className="form-control" value={formik.values.address} onChange={formik.handleChange} placeholder="House number and street name" />
@@ -182,7 +214,7 @@ export default function MakeOrder() {
                                                     <label htmlFor="order-couponName">Coupon <abbr className="required" title="required">*</abbr></label>
 
                                                     <select id="order-couponName" name="couponName" value={formik.values.couponName} onChange={formik.handleChange} className="form-control wide">
-                                                    <option>Select Coupon</option>
+                                                        <option>Select Coupon</option>
                                                         {coupons?.map((coupon) => (
                                                             <option key={coupon._id} value={coupon.name}>
                                                                 {coupon.name}| {coupon.amount}%
@@ -260,7 +292,7 @@ export default function MakeOrder() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <p className="p-text">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#/">privacy policy.</a></p>
+                                        <p className="p-text">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link to={'/Privacy'} style={{color:'#46D7D4'}}>privacy policy</Link></p>
                                         <form method="post" onSubmit={formik.handleSubmit}>
                                             {/* Your form inputs */}
                                             <div className="agree-policy">

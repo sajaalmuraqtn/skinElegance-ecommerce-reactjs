@@ -12,7 +12,6 @@ export default function AdvertisementComponent({ advertisement }) {
             <div className="post-item">
                 <Link className="thumb " to={`/Advertisements/${advertisement.slug}`} state={{ advertisementId: advertisement._id,slug:advertisement.slug}}>
                     <img src={advertisement.mainImage.secure_url} width={370} height={450} alt="Image-HasTech" />
-
                 </Link>
                 
                 <div className="content">

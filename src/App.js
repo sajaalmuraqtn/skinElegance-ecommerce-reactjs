@@ -50,6 +50,12 @@ import CancelOrder from './Pages/Order/cancelOrder.jsx';
 import AdvertisementDetails from './Pages/Advertesment/AdvertesmentDetails.page.jsx';
 import ServiceDetails from './Pages/Advertesment/ServiceDetails.jsx';
 import Advertisements from './Pages/Advertesment/Advertesment.page.jsx';
+import AboutPage from './Pages/About/AboutPage.jsx';
+import Privacy from './Pages/Privacy/Privacy.jsx';
+import Contacts from './Pages/Contacts/Contacts.jsx';
+import Frequently from './Pages/Frequently/Frequently.jsx';
+import AddPaymentMethod from './Pages/Order/AddPaymentMethod.jsx';
+import CardDetails from './Pages/Order/CardDetails.jsx';
 
 axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 
@@ -62,11 +68,13 @@ function App() {
       { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory  /></ProductApiContextProvider>, },
       { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails  /></ProductApiContextProvider> },
       { path: 'Advertisements', element: <Advertisements  />},
+      { path: 'AddPaymentMethod', element: <ProtectedRouter><AddPaymentMethod/> </ProtectedRouter>  },
       { path: "Advertisements/:advertisementId", element: <AdvertisementDetails  />},
       { path: "Advertisements/:advertisementId/:serviceId",element:<ServiceDetails />},
       { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
       { path: 'MyOrders/Cancel', element: <ProductApiContextProvider><ProtectedRouter><CancelOrder /></ProtectedRouter></ProductApiContextProvider> },
       { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></ProductApiContextProvider> },
+      { path: 'Orders/CardDetails', element: <ProductApiContextProvider><ProtectedRouter><CardDetails/></ProtectedRouter></ProductApiContextProvider> },
       { path: 'MyOrders/CancelOrder', element:<ProtectedRouter><CancelOrder /></ProtectedRouter>},
       { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
       { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
@@ -79,6 +87,10 @@ function App() {
       { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword /></AuthContextProvider> },
       { path: 'SetCode', element: <AuthContextProvider><SetCode  /></AuthContextProvider> },
       { path: 'Login', element: <Login /> },
+      { path: 'About', element: <AboutPage /> },
+      { path: 'Frequently', element: <Frequently /> },
+      { path: 'Privacy', element: <Privacy /> },
+      { path: 'Contacts', element:<ProtectedRouter><Contacts /></ProtectedRouter> },
       { path: 'Register', element: <AuthContextProvider> <Register /></AuthContextProvider> },
       { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
     ]

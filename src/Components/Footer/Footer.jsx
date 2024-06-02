@@ -23,14 +23,11 @@ import logo from '../../assets/home.png';
           <div className="widget-item">
             <h4 className="widget-title">Information</h4>
             <ul className="widget-nav">
-              <li><a href="blog.html">Blog</a></li>
-              <li><a href="about-us.html">About us</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="faq.html">Privacy</a></li>
-              <li><a href="account-login.html">Login</a></li>
-              <li><a href="product.html">Shop</a></li>
-              <li><a href="my-account.html">My Account</a></li>
-              <li><a href="faq.html">FAQs</a></li>
+              <li><Link to={'/About'}>About us</Link></li>
+              <li><Link to={"/Contacts"}>Contact</Link></li>
+              <li><Link to={"/Frequently"}>Questions</Link></li>
+              <li><Link to={"/Privacy"}>Privacy</Link></li>
+              <li><Link to={'/Products'}>Shop</Link></li>
             </ul>
           </div>
         </div>

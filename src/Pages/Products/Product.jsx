@@ -59,7 +59,7 @@ export default function Product() {
         console.error('Error fetching products:', error);
       });
     } else {
-      getProducts(page, 'allProducts/active?limit=9').then(data => {
+      getProducts(page, 'allProducts/active').then(data => {
         if (data && data.total) {
           const totalPages = Math.ceil(data.total / itemsPerPage);
           setTotalPages(totalPages);

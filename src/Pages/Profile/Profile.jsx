@@ -8,10 +8,18 @@ import { Helmet } from 'react-helmet';
 export default function Profile() {
 
   const { getProfile, user } = useContext(AuthContext);
-
+  const [PaymentMethods, setPaymentMethods] = useState([]);
+  const getPaymentMethods = async () => {
+    const token = localStorage.getItem('userToken');
+    let url = `/PaymentMethod/getPaymentMethods`;
+    const { data } = await axios.get(url, { headers: { authorization: `Saja__${token}` } });
+    if (data.message === "success") {
+      setPaymentMethods(data.PaymentMethods);
+    }
+  };
   useEffect(() => {
     getProfile()
-    console.log(user);
+    getPaymentMethods()
   }, [])
   return (
     <>
@@ -19,10 +27,10 @@ export default function Profile() {
         <meta charSet="utf-8" />
         <title>SkinElegance|Profile</title>
       </Helmet>
-      <main className="main-content pt-10 pb-10 container" style={{ height: "100vh" }}>
+      <main className="main-content pt-10 container"style={{height:PaymentMethods?.length==0?'100vh':'' }} >
         {!user ? <Loading fontSize={70} height={500} />
           :
-          <div className="row" style={{ height: "100vh", marginTop: "100px" }}>
+          <>  <div className="row" style={{ height: "100vh", marginTop: "100px" }}>
             {/* left column */}
             <div className="col-md-3 mt-2">
               <div className="text-center">
@@ -56,10 +64,59 @@ export default function Profile() {
               </div>
               {/*== End Register Area Wrapper ==*/}
             </div>
-            <Link to={'/updateProfile'} className='btn btn-primary ' style={{ marginTop: '-90px', marginBottom: '-50px' }}> Update Profile</Link>
+            <Link to={'/updateProfile'} className='btn btn-primary ' style={{ marginTop: '-130px', marginBottom: '-50px',width:'26%' }}> Update Profile</Link>
           </div>
-        }
-      </main>
+
+            {PaymentMethods?.length === 0 ?
+              ''
+              :
+              <div className="app-content" style={{marginTop:'-170px',marginBottom:'-50px'}} >
+                {
+                  <>
+                    <div className="app-content-header">
+                      <h1 className="app-content-headerText fs-4">Payment Methods</h1>
+                    </div>
+                    <div className="shopping-cart-form table-responsive mt-5">
+                      <table className="table text-center">
+                        <thead>
+                          <tr>
+                            <th className="product-name">card Number</th>
+                            <th className="product-subtotal">Card Type</th>
+                            <th className="product-subtotal">Expiry Date</th>
+                            <th className="product-subtotal">createdAt</th>
+                            <th className="product-remove">&nbsp;</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {PaymentMethods?.map((payment) => (
+                            <tr className="tbody-item" key={payment._id}>
+                              <td className="product-subtotal">
+                                <span className="price">{payment.cardDetails.cardNumber}</span>
+                              </td>
+                              <td className="product-subtotal">
+                                <span className="price">{payment.cardDetails.cardType}</span>
+                              </td>
+                              <td className="product-subtotal">
+                                <span className="price">{payment.cardDetails.expiryDate}</span>
+                              </td>
+                              <td className="product-subtotal">
+                                <span className="price">{payment.createdAt.split('T')[0]}</span>
+                              </td>
+                              <td className="product-name">
+                                <Link className='btn' to={'/Orders/CardDetails'} state={{ cardId: payment._id }}>Details</Link>
+                              </td>
+                            </tr>))
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+
+
+                  </>}
+                {/*== Pagination ==*/}
+              </div >}
+          </>}
+      </main >
     </>
   )
 }

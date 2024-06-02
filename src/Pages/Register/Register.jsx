@@ -138,7 +138,7 @@ export default function Register() {
                     </div>
                     {/* Your other form fields */}
                     <div className="form-group">
-                      <p className="desc mb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
+                      <p className="desc mb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <Link to={'/Privacy'} style={{color:'#46D7D4'}}>privacy policy</Link>.</p>
                       <form method="post" onSubmit={formik.handleSubmit}>
                         {/* Your form inputs */}
                         <div className="agree-policy">

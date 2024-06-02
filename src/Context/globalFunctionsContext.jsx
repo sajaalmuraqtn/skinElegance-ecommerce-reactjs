@@ -14,7 +14,7 @@ export function GlobalFunctionContextProvider({ children }) {
 
     function selectRandomColor() {
         // Define the array inside the function
-        const texts = ["#FFEDB4", "#DFE4FF", "#FFEACC", "#FFDAE0", "#FFF3DA", "hsl(148, 66%, 81%)"];
+        const texts = ["#FF899B", "#8E65FA", "#0CC0DF", "#F6B978", "#FF66C4", "hsl(148, 66%, 81%)"];
         // Generate a random index between 0 and 5
         const randomIndex = Math.floor(Math.random() * texts.length);
         // Return the text at the random index

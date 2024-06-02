@@ -70,7 +70,7 @@ export default function OrderDetails() {
                     <tr className="tbody-item" key={product.productId}>
 
                       <td className="product-name">
-                        <Link className="title text-capitalize fs-5" to={`/Products/${product.slug}`} state={{ productId: product.productId,slug:product.slug }}>{product.name}</Link>
+                        <Link className="title text-capitalize fs-5" to={`/Products/${product.slug}`} state={{ productId: product.productId, slug: product.slug }}>{product.name}</Link>
                       </td>
                       <td className="product-subtotal">
                         <span className="price">₪{product.unitPrice}</span>
@@ -144,8 +144,10 @@ export default function OrderDetails() {
                       </tr>
                       <tr className="shipping-totals">
                         <th>Payment Type</th>
-                        <td>
-                          <p className="destination"><strong>{order.paymentType}</strong>.</p>
+                        <td>{order.paymentType === 'cash' ?
+                          <p className="destination text-capitalize"><strong>{order.paymentType}</strong>.</p> :
+                          <p className="destination text-capitalize"><strong><Link to={'/Orders/CardDetails'} state={{ orderId: order._id}}>{order.paymentType}</Link></strong>.</p>
+                        }
                         </td>
                       </tr>
                       <tr className="shipping-totals">

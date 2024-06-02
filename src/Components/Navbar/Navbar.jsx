@@ -19,17 +19,19 @@ export default function Navbar({ logo, user, LogOut }) {
             <div className="col-lg-7 col-xl-7 d-none d-lg-block">
               <div className="header-navigation ps-7">
                 <ul className="main-nav justify-content-start">
-                  {user ? <> <li><Link aria-current="page" to="/Products" style={{color: location.pathname.includes('Products') ? '#46D7D4':''}} >Products <i className="fa-brands fa-shopify" style={{ marginLeft: "5px", color: '#46D7D4' }}></i>
-                  </Link></li>
-                    <li><Link aria-current="page" to="/MyOrders" style={{color: location.pathname.includes('/MyOrders') ? '#46D7D4':''}}>Orders<i className="fa-solid fa-truck" style={{ marginLeft: "5px", color: '#46D7D4' }}></i></Link></li>
+                 
+                   <li><Link aria-current="page" to="/Products" style={{color: location.pathname.includes('Products') ? '#46D7D4':''}} >Products <i className="fa-brands fa-shopify" style={{ marginLeft: "5px", color: '#46D7D4' }}></i>
+                  </Link></li> 
+                  <li> <Link aria-current="page" to="/Advertisements" style={{color: location.pathname.includes('/Advertisements') ? '#46D7D4':''}}>
+                    Advertisements
+                      <i className="fas fa-solid fa-icons"  style={{ marginLeft: "5px", color: '#46D7D4' }}></i>
+                    </Link></li>
+                   {user ? <>  <li><Link aria-current="page" to="/MyOrders" style={{color: location.pathname.includes('/MyOrders') ? '#46D7D4':''}}>Orders<i className="fa-solid fa-truck" style={{ marginLeft: "5px", color: '#46D7D4' }}></i></Link></li>
                     <li> <Link aria-current="page" to="/FavoriteList" style={{color: location.pathname === '/FavoriteList' ? '#46D7D4':''}}>
                       Favorite
                       <i className="fas fa-solid fa-heart"  style={{ marginLeft: "5px", color: '#46D7D4' }}></i>
                     </Link></li>
-                    <li> <Link aria-current="page" to="/Advertisements" style={{color: location.pathname.includes('/Advertisements') ? '#46D7D4':''}}>
-                    Advertisements
-                      <i className="fas fa-solid fa-icons"  style={{ marginLeft: "5px", color: '#46D7D4' }}></i>
-                    </Link></li>
+                   
                   </> : ''}
 
                 </ul>

@@ -36,7 +36,7 @@ export default function AdvertisementDetails() {
                             <div className="col-lg-5">
                                 <div className="product-details-thumb " >
                                     <img src={advertisement.mainImage.secure_url} width={440} height={503} alt="Image" />
-                                    {isCreatedThisMonth(advertisement.createdAt) && (<span className="flag-new" style={{ backgroundColor: 'red' }}>new</span>)}
+                                    {isCreatedThisMonth(advertisement?.createdAt) && (<span className="flag-new" style={{ backgroundColor: 'red' }}>new</span>)}
 
                                 </div>
                             </div>
@@ -47,10 +47,6 @@ export default function AdvertisementDetails() {
 
                                     <div className="product-details-qty-list">
                                         <ul className="product-details-info-wrap">
-
-                                            <li><span># of Services</span>
-                                                <p>{advertisement.Services.length}</p>
-                                            </li>
                                             <li><span> City</span>
                                                 <p>{advertisement.city}</p>
                                             </li>
@@ -64,11 +60,11 @@ export default function AdvertisementDetails() {
                                             <i class="fa-solid fa-phone fa-2xl" style={{ color: '#3ee302' }}></i>
                                             <span className='fs-4'> {advertisement?.phoneNumber}</span>
                                         </div>
-                                        {advertisement?.facebookLink ? <div className='social-Media'>
+                                        {advertisement?.facebookLink!=='-' ? <div className='social-Media'>
                                             <i class="fa-brands fa-facebook fa-2xl" style={{ color: '#007fe0' }}></i>
                                             <a href={advertisement?.facebookLink} className='fs-4'> {advertisement.slug}</a>
                                         </div> : ''}
-                                        {advertisement?.instagramLink ? <div className='social-Media'>
+                                        {advertisement?.instagramLink!=='-' ? <div className='social-Media'>
                                             <i class="fa-brands fa-instagram fa-2xl" style={{ color: '#f702aa' }}></i>
                                             <a href={advertisement?.instagramLink} className='fs-4'> {advertisement.slug}</a>
                                         </div> : ''}

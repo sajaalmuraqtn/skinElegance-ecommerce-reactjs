@@ -170,7 +170,7 @@ export default function ProductWithCategory() {
         <section className="page-header-area" data-bg-color="#FFF3DA" style={{ marginTop: '-50px' }}>
           <div className="container">
             <div className="page-header-st3-content mt-10">
-              <h2 className="page-header-title text-Capitalize">{location.state.categoryName}</h2>
+              <h2 className="page-header-title text-capitalize">{location.state.categoryName}</h2>
             </div>
           </div>
         </section>
