@@ -13,7 +13,6 @@ export default function LatestNewAdvertisements() {
                 setAdvertisements(data.advertisements);
             }
         } catch (error) {
-            console.log(error);
         }
     };
 

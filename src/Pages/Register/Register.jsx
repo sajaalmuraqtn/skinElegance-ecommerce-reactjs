@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import textThemeSlider from '../../assets/register_login.png';
-import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
@@ -62,7 +61,6 @@ export default function Register() {
 
     let { data } = await axios.post('/auth/signUp', formData).catch((err) => {
       setStatusError(err.response.data.message);
-      console.error(err.response.data.message);
     })
     if (data.message === "success") {
       setStatusError('');
@@ -71,7 +69,6 @@ export default function Register() {
     } else {
       setErrors(data.err[0]);
     }
-    console.log(data)
   }
 
 
@@ -138,7 +135,7 @@ export default function Register() {
                     </div>
                     {/* Your other form fields */}
                     <div className="form-group">
-                      <p className="desc mb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <Link to={'/Privacy'} style={{color:'#46D7D4'}}>privacy policy</Link>.</p>
+                      <p className="desc mb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <Link to={'/Privacy'} style={{ color: '#46D7D4' }}>privacy policy</Link>.</p>
                       <form method="post" onSubmit={formik.handleSubmit}>
                         {/* Your form inputs */}
                         <div className="agree-policy">

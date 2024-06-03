@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/Auth.context.jsx';
+import React, {useEffect, useState } from 'react'
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -22,8 +21,7 @@ export default function MyOrders() {
                 setMyOrders(data.orders);
              }
         } catch (error) {
-            console.log(error);
-        }
+         }
     };
 
     useEffect(() => {

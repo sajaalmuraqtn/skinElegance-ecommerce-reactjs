@@ -10,18 +10,14 @@ export default function LatestNewProduct() {
     try {
       const separator = urlProduct.includes('?') ? '&' : '?'; // to put the sort and other filters method
       const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}`);
-      console.log(data);
       if (data.message === "success") {
         setProducts(data.products);
-        console.log(products);
       }
     } catch (error) {
-      console.log(error);
     }
   };  
   
   useEffect(() => {
-
     getProducts(1, 'allProducts/active?limit=6&sort=-createdAt');
    }, []); 
 

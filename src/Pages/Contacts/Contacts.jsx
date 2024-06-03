@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import textThemeSlider from '../../assets/register_login.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import * as Yup from 'yup'; // Import Yup as a whole module
+import * as Yup from 'yup';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
@@ -30,12 +30,14 @@ export default function Contacts() {
 
     async function sendContactData(values) {
         const token = localStorage.getItem("userToken");
+        try {
             const { data } = await axios.post('/ContactSupport/create', values, { headers: { authorization: `Saja__${token}` } });
             if (data.message === "success") {
                 toast.success('Contact Send Successfully');
-            } 
+            }
+        } catch (error) {
+        }
     }
-
     return (
         <>
             <Helmet>
@@ -66,8 +68,8 @@ export default function Contacts() {
                                     <form id="contact-form" onSubmit={formik.handleSubmit}>
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="form-group"> 
-                                                     <select id="order-city" name="title" value={formik.values.title} onChange={formik.handleChange} className="form-control wide">
+                                                <div className="form-group">
+                                                    <select id="order-city" name="title" value={formik.values.title} onChange={formik.handleChange} className="form-control wide">
                                                         <option>Select Title</option>
                                                         <option value={"Support Team"}>Support Team</option>
                                                         <option value={"Request an Advertisement"}>Request an Advertisement</option>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 export default function AdvertisementComponent({ advertisement }) {
 

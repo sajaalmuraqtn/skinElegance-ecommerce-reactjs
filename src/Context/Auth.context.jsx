@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext(null);
 
@@ -9,9 +9,11 @@ export function AuthContextProvider({ children }) {
    
   async function getProfile() {
     const token = localStorage.getItem("userToken");
-  
+  try{
     const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
     setUser(data.user);
+  } catch (error) {
+  }
   }
 
     return (

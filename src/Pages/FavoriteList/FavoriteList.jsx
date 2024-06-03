@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/Auth.context.jsx';
-import axios from 'axios';
+import React, { useContext, useEffect } from 'react'
+ import axios from 'axios';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import { toast } from 'react-toastify';
@@ -10,8 +9,7 @@ import { Helmet } from 'react-helmet';
 import Loading from '../../Components/Loading/Loading.jsx';
 
 export default function FavoriteList() {
-    const { user } = useContext(AuthContext);
-    const { isEmpty, favoriteList, getFavoriteList } = useContext(ProductApiContext)
+     const { isEmpty, favoriteList, getFavoriteList } = useContext(ProductApiContext)
     const { getCart, cart } = useContext(CartContext);
     let navigate = useNavigate()
 
@@ -46,30 +44,32 @@ export default function FavoriteList() {
 
     const addToCart = async (productId) => {
         await getCart()
-        const token = localStorage.getItem('userToken');
-        let match = false;
-        if (cart) {
-            for (let index = 0; index < cart.products.length; index++) {
-                if (cart.products[index].productId === productId) {
-                    match = true;
-                    toast.error('Product Already Exist');
+        try {
+            const token = localStorage.getItem('userToken');
+            let match = false;
+            if (cart) {
+                for (let index = 0; index < cart.products.length; index++) {
+                    if (cart.products[index].productId === productId) {
+                        match = true;
+                        toast.error('Product Already Exist');
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        if (!cart || !match) {
-            let objData = { productId };
-            const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
-            if (data.message == "success") {
-                toast.success('Product added successfully!');
-                await getCart()
+            if (!cart || !match) {
+                let objData = { productId };
+                const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+                if (data.message == "success") {
+                    toast.success('Product added successfully!');
+                    await getCart()
+                }
             }
+        } catch (error) {
         }
     }
 
     useEffect(() => {
         getFavoriteList();
-        console.log("favoriteList", favoriteList);
     }, [])
 
     return (
@@ -84,7 +84,7 @@ export default function FavoriteList() {
                 <section className="section-space">
                     {isEmpty ? <NotFound title={'You don`t have favorite list yet'} titlePage={'Products'} goTO={'/Products'} /> :
                         <>
-                            {favoriteList?.products?.length== 0 ? <Loading margin={50} height={500} fontSize={70} /> :
+                            {favoriteList?.products?.length == 0 ? <Loading margin={50} height={500} fontSize={70} /> :
 
                                 <div className="container">
                                     <div className='row mt-3 mb-5'>

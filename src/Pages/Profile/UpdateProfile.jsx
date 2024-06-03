@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import textThemeSlider from '../../assets/images/slider/slider3.webp';
-import { AuthContext } from '../../Context/Auth.context.jsx';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
@@ -11,9 +9,7 @@ import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
 export default function UpdateProfile() {
-  // Use array destructuring to get the state variable and the function to update it
-  const { saveCurrentUser } = useContext(AuthContext);
-
+ 
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
   let navigate = useNavigate();
@@ -56,20 +52,21 @@ export default function UpdateProfile() {
 
 
     const token = localStorage.getItem("userToken");
-
-    let { data } = await axios.patch('/user/update', formData, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
-      setStatusError(err.response.data.message);
-      console.error(err.response.data.message);
-    })
-    if (data.message === "success") {
-      setStatusError('');
-      setErrors([]);
-      toast("Profile Updated successfully");
-      getProfile()
-    } else {
-      setErrors(data.err[0]);
+    try {
+      let { data } = await axios.patch('/user/update', formData, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
+        setStatusError(err.response.data.message);
+        console.error(err.response.data.message);
+      })
+      if (data.message === "success") {
+        setStatusError('');
+        setErrors([]);
+        toast("Profile Updated successfully");
+        getProfile()
+      } else {
+        setErrors(data.err[0]);
+      }
+    } catch (error) {
     }
-    console.log(data)
   }
 
   async function getProfile() {
@@ -77,15 +74,18 @@ export default function UpdateProfile() {
     if (!token) {
       return navigate("/Login");
     }
-    const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
-    setUser(data.user);
+    try {
+      const { data } = await axios.get(`/user/profile`, { headers: { authorization: `Saja__${token}` } });
+      setUser(data.user);
 
-    // Update formik's initial values after getting user profile
-    formik.setValues({
-      userName: data.user.userName,
-      address: data.user.address,
-      phoneNumber: data.user.phoneNumber
-    });
+      // Update formik's initial values after getting user profile
+      formik.setValues({
+        userName: data.user.userName,
+        address: data.user.address,
+        phoneNumber: data.user.phoneNumber
+      });
+    } catch (error) {
+    }
   }
 
   const handleFileChange = (e) => {
@@ -95,8 +95,7 @@ export default function UpdateProfile() {
 
   useEffect(() => {
     getProfile();
-    console.log(user);
-  }, []);
+   }, []);
 
   return (
     <>

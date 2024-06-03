@@ -32,12 +32,11 @@ import { ProductApiContextProvider } from './Context/productApiContext.jsx';
 import ProductDetails from './Pages/Products/productDetails.jsx';
 import ProductWithCategory from './Pages/Products/productWithCategory.jsx';
 import ForgotPassword from './Pages/ForgotPassword/forgotPassword.jsx';
-import { AuthContext, AuthContextProvider } from './Context/Auth.context.jsx';
+import {AuthContextProvider } from './Context/Auth.context.jsx';
 import MyOrders from './Pages/Order/MyOrders.jsx';
 import OrderDetails from './Pages/Order/OrderDetails.jsx';
 import CartPage from './Pages/Cart/CartPage.jsx';
 import ProtectedRouter from './ProtectedRouter/ProtectedRouter.jsx';
-import { useContext, useEffect, useState } from 'react';
 import UpdateProfile from './Pages/Profile/UpdateProfile.jsx';
 import Profile from './Pages/Profile/Profile.jsx';
 import FavoriteList from './Pages/FavoriteList/FavoriteList.jsx';
@@ -45,7 +44,6 @@ import MakeOrder from './Pages/Order/MakeOrder.jsx';
 import UpdatePassword from './Pages/ForgotPassword/UpdatePassword.jsx';
 import { CartContextProvider } from './Context/CartContext.jsx';
 import ResetPassword from './Pages/ForgotPassword/ResetPassword.jsx';
-import SetCode from './Pages/ForgotPassword/SetCode.jsx';
 import CancelOrder from './Pages/Order/cancelOrder.jsx';
 import AdvertisementDetails from './Pages/Advertesment/AdvertesmentDetails.page.jsx';
 import ServiceDetails from './Pages/Advertesment/ServiceDetails.jsx';
@@ -85,7 +83,6 @@ function App() {
       { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword  /></AuthContextProvider> },
       { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword /></ProtectedRouter></AuthContextProvider> },
       { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword /></AuthContextProvider> },
-      { path: 'SetCode', element: <AuthContextProvider><SetCode  /></AuthContextProvider> },
       { path: 'Login', element: <Login /> },
       { path: 'About', element: <AboutPage /> },
       { path: 'Frequently', element: <Frequently /> },

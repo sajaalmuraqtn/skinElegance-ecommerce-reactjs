@@ -3,7 +3,7 @@ import Navbar from '../Navbar/Navbar';
 import { Outlet } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import logo from '../../assets/logo.png'
-import { AuthContext, AuthContextProvider } from '../../Context/Auth.context.jsx';
+import { AuthContext} from '../../Context/Auth.context.jsx';
 import { useNavigate } from "react-router-dom";
 
 

@@ -17,13 +17,10 @@ export function ProductApiContextProvider({ children }) {
       searchQuery = `search=${searchQuery}`;
       const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}&${searchQuery}`);
 
-      console.log(data);
       if (data.message === "success") {
         setProducts(data.products);
-        console.log(products);
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -31,13 +28,10 @@ export function ProductApiContextProvider({ children }) {
     try {
       const separator = urlProduct.includes('?') ? '&' : '?'; // to put the sort and other filters method
       const { data } = await axios.get(`/products/${urlProduct}${separator}page=${page}`);
-      console.log(data);
       if (data.message === "success") {
         setProducts(data.products);
-        console.log(products);
       }
     } catch (error) {
-      console.log(error);
     }
   };
 

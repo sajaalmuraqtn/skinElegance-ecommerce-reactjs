@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import textThemeSlider from '../../assets/register_login.png'
-import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
@@ -13,8 +12,7 @@ export default function ResetPassword() {
   let [errors, setErrors] = useState([]);
   let [statusError, setStatusError] = useState('');
   let navigate = useNavigate();
-  const { getProfile, user } = useContext(AuthContext);
-
+ 
   let schema = Yup.object(
     {
       code: Yup.string().required("Code is required"),

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import textThemeSlider from '../../assets/register_login.png'
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
@@ -38,8 +38,7 @@ export default function UpdatePassword() {
       const token = localStorage.getItem('userToken');
       const response = await axios.patch('/auth/changePassword', values, { headers: { authorization: `Saja__${token}` } });
       const { data } = response;
-      console.log(data.message);
-      if (data.message === "success") {
+       if (data.message === "success") {
         setUser(null);
         localStorage.removeItem("userToken");
         toast("Password Changed successfully");

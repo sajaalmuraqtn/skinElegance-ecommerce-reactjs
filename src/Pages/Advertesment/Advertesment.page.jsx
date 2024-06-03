@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'; // Import useNavigate instead of useHistory
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
@@ -10,7 +10,7 @@ export default function Advertisements() {
     const queryParams = new URLSearchParams(location.search);
     const pageFromURL = queryParams.get('page');
     const [page, setPage] = useState(parseInt(pageFromURL) || 1);
- 
+
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
     const [advertisements, setAdvertisements] = useState([]);
     const [params, setParams] = useSearchParams();
@@ -24,14 +24,11 @@ export default function Advertisements() {
         try {
             const separator = urlAdvertisement.includes('?') ? '&' : '?'; // to put the sort and other filters method
             const { data } = await axios.get(`/advertisement/${urlAdvertisement}${separator}page=${page}`);
-            console.log(data);
-            if (data.message === "success") {
+             if (data.message === "success") {
                 setAdvertisements(data.advertisements);
-                console.log(advertisements);
-            }
+             }
         } catch (error) {
-            console.log(error);
-        }
+         }
     };
 
     const getSearchAdvertisements = async (page, urlAdvertisement, searchQuery) => {
@@ -39,14 +36,11 @@ export default function Advertisements() {
             searchQuery = `search=${searchQuery}`;
             const separator = urlAdvertisement.includes('?') ? '&' : '?'; // to put the sort and other filters method
             const { data } = await axios.get(`/advertisement/${urlAdvertisement}${separator}page=${page}&${searchQuery}`);
-            console.log(data);
-            if (data.message === "success") {
+             if (data.message === "success") {
                 setAdvertisements(data.advertisements);
-                console.log(advertisements);
-            }
+             }
         } catch (error) {
-            console.log(error);
-        }
+         }
     };
 
     const [totalPages, setTotalPages] = useState(0);
@@ -59,11 +53,9 @@ export default function Advertisements() {
                     const totalPages = Math.ceil(data.total / itemsPerPage);
                     setTotalPages(totalPages);
                 } else {
-                    console.error('Invalid response data:', data);
-                }
+                 }
             }).catch(error => {
-                console.error('Error fetching products:', error);
-            });
+             });
         }
         else {
             getAdvertisements(page, 'allAdvertisements/active').then(data => {
@@ -71,13 +63,11 @@ export default function Advertisements() {
                     const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
                     setTotalPages(totalPages);
                 } else {
-                    console.error('Invalid response data:', data);
-                }
+                 }
             }).catch(error => {
-                console.error('Error fetching products:', error);
-            });
+             });
         }
-    },[page, params]);
+    }, [page, params]);
 
     const handlePageChange = (pageNumber) => {
         setPage(pageNumber);
@@ -115,7 +105,7 @@ export default function Advertisements() {
                     </div>
                 </section>
                 {/*== End Page Header Area Wrapper ==*/}
-                <div className="page-header-area "style={{ marginBottom: '-50px' }} >
+                <div className="page-header-area " style={{ marginBottom: '-50px' }} >
                     <div className="container">
                         <div className="shop-top-bar">
                             <div className="select-price-range">
@@ -144,7 +134,7 @@ export default function Advertisements() {
                     <div className="container">
                         <div className="row mb-n4 mb-sm-n10 g-3 g-sm-6">
                             {/*== Start Product Item ==*/}
-                            {(!params.get('query') &&advertisements.length == 0 ) ?(
+                            {(!params.get('query') && advertisements.length == 0) ? (
                                 <Loading margin={100} height={500} fontSize={70} />
                             ) :
                                 advertisements.map((advertisement) => (
@@ -172,7 +162,11 @@ export default function Advertisements() {
                     </div>
                 </section>
                 {/*== End Product Area Wrapper ==*/}
+                <div className="map-area">
+                    <iframe className="w-100" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d27194.552009099963!2d35.008594699999996!3d31.57029895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1678487798656!5m2!1sen!2s" width={600} height={450} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                </div>
             </main >
+
             {/*== Product Quick View Modal ==*/}
 
             {/*== End Product Quick View Modal ==*/}

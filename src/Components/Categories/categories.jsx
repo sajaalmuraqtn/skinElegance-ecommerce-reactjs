@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import Loading from '../Loading/Loading.jsx';
-import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom/dist/index.js';
 import CategoryComponent from './categoryComponent.jsx';
 

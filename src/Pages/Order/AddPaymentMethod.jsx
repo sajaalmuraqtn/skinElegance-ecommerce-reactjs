@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup as a whole module
 import axios from 'axios';
@@ -41,6 +41,7 @@ export default function AddPaymentMethod() {
 
     async function sendCardData(values) {
         const token = localStorage.getItem('userToken');
+        try { 
         let { data } = await axios.post('/PaymentMethod/AddPayment', values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
             setStatusError(err.response.data.message);
             console.error(err.response.data.message);
@@ -54,6 +55,8 @@ export default function AddPaymentMethod() {
         } else {
             setErrors(data.validationError);
         }
+    } catch (error) {
+      }
     }
 
     useEffect(() => { }, []);

@@ -39,8 +39,7 @@ export default function Product() {
         setCategories(data.activeCatagories);
       }
     } catch (error) {
-      console.log(error);
-    }
+     }
   };
 
   useEffect(() => {
@@ -52,22 +51,16 @@ export default function Product() {
         if (data && data.total) {
           const totalPages = Math.ceil(data.total / itemsPerPage);
           setTotalPages(totalPages);
-        } else {
-          console.error('Invalid response data:', data);
         }
       }).catch(error => {
-        console.error('Error fetching products:', error);
       });
     } else {
       getProducts(page, 'allProducts/active').then(data => {
         if (data && data.total) {
           const totalPages = Math.ceil(data.total / itemsPerPage);
           setTotalPages(totalPages);
-        } else {
-          console.error('Invalid response data:', data);
         }
       }).catch(error => {
-        console.error('Error fetching products:', error);
       });
     }
   }, [page, params]);
@@ -143,11 +136,7 @@ export default function Product() {
               </div>
 
               <div className="select-on-sale d-none d-md-flex">
-                <span>On Sale :</span>
-                <select className="select-on-sale-form">
-                  <option selected>Yes</option>
-                  <option value="1">No</option>
-                </select>
+
               </div>
             </div>
           </div>
@@ -186,7 +175,7 @@ export default function Product() {
                         <span className="fa fa-chevron-left" aria-hidden="true" />
                       </button>
                     </li>
-                    <button className="page-link" onClick={() =>setPage(1)}>1</button>
+                    <button className="page-link" onClick={() => setPage(1)}>1</button>
                     <li className="page-item">
                       <button
                         className="page-link next"

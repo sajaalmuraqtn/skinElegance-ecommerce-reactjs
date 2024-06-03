@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/Auth.context.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../Context/CartContext.jsx';
 import NotFound from '../../Components/NotFound/NotFound.jsx';
@@ -8,8 +7,6 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet';
 
 export default function CartPage() {
-
-    const { user } = useContext(AuthContext);
     const { getCart, cart, isEmpty, setIsEmpty } = useContext(CartContext);
     const [statusError, setStatusError] = useState(null);
     const [productId, setProductId] = useState(null);
@@ -44,7 +41,6 @@ export default function CartPage() {
             const config = {
                 headers: { authorization: `Saja__${token}` }
             };
-
             const { data } = await axios.patch(`/cart/clearCart`, {}, config);
 
             if (data.message === "success") {
@@ -65,12 +61,9 @@ export default function CartPage() {
             if (response.data && response.data.message === "success") {
                 toast.success('Cart Updated successfully!');
                 getCart();
-            } else {
-                console.error("Invalid response from server:", response);
             }
         } catch (error) {
             // Handle error
-            console.error("Error adding to cart:", error);
             setStatusError(error.response.data.validationError[0].type);
             return setProductId(productId);
         }
@@ -79,7 +72,6 @@ export default function CartPage() {
 
     const updateQuantity = async (productId) => {
         const newQuantity = document.getElementById(`quantity-${productId}`).value;
-        console.log(productId);
         await addToCart(productId, newQuantity);
     };
 
@@ -125,13 +117,13 @@ export default function CartPage() {
                                                 </td>
                                                 <td className="product-thumbnail">
                                                     <div className="thumb">
-                                                        <Link to={`/Products/${product.productSlug}`} state={{ productId: product.productId,slug:product.productSlug }}>
+                                                        <Link to={`/Products/${product.productSlug}`} state={{ productId: product.productId, slug: product.productSlug }}>
                                                             <img src={product.mainImage.secure_url} alt="Image-HasTech" />
                                                         </Link>
                                                     </div>
                                                 </td>
                                                 <td className="product-name">
-                                                    <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId ,slug:product.productSlug }}>{product.productName}</Link>
+                                                    <Link className="title text-capitalize fs-5" to={`/Products/${product.productSlug}`} state={{ productId: product.productId, slug: product.productSlug }}>{product.productName}</Link>
                                                 </td>
                                                 <td className="product-quantity">
                                                     <div className="pro-qty">

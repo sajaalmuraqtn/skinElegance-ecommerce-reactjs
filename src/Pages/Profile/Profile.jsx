@@ -12,9 +12,12 @@ export default function Profile() {
   const getPaymentMethods = async () => {
     const token = localStorage.getItem('userToken');
     let url = `/PaymentMethod/getPaymentMethods`;
-    const { data } = await axios.get(url, { headers: { authorization: `Saja__${token}` } });
-    if (data.message === "success") {
-      setPaymentMethods(data.PaymentMethods);
+    try {
+      const { data } = await axios.get(url, { headers: { authorization: `Saja__${token}` } });
+      if (data.message === "success") {
+        setPaymentMethods(data.PaymentMethods);
+      }
+    } catch (error) {
     }
   };
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function Profile() {
         <meta charSet="utf-8" />
         <title>SkinElegance|Profile</title>
       </Helmet>
-      <main className="main-content pt-10 container"style={{height:PaymentMethods?.length==0?'100vh':'' }} >
+      <main className="main-content pt-10 container" style={{ height: PaymentMethods?.length == 0 ? '100vh' : '' }} >
         {!user ? <Loading fontSize={70} height={500} />
           :
           <>  <div className="row" style={{ height: "100vh", marginTop: "100px" }}>
@@ -64,13 +67,13 @@ export default function Profile() {
               </div>
               {/*== End Register Area Wrapper ==*/}
             </div>
-            <Link to={'/updateProfile'} className='btn btn-primary ' style={{ marginTop: '-130px', marginBottom: '-50px',width:'26%' }}> Update Profile</Link>
+            <Link to={'/updateProfile'} className='btn btn-primary ' style={{ marginTop: '-130px', marginBottom: '-50px', width: '26%' }}> Update Profile</Link>
           </div>
 
             {PaymentMethods?.length === 0 ?
               ''
               :
-              <div className="app-content" style={{marginTop:'-170px',marginBottom:'-50px'}} >
+              <div className="app-content" style={{ marginTop: '-170px', marginBottom: '-50px' }} >
                 {
                   <>
                     <div className="app-content-header">

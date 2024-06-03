@@ -32,11 +32,14 @@ export default function ProductComponent({ product }) {
             }
             if (!cart || !match) {
                 let objData = { productId };
-                const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
+             try{ 
+                  const { data } = await axios.post(`/cart`, objData, { headers: { authorization: `Saja__${token}` } });
                 if (data.message == "success") {
                     toast.success('Product added successfully!');
                     await getCart()
                 }
+            } catch (error) {
+            }
             }
         }
     }

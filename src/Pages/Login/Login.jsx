@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import textThemeSlider from '../../assets/register_login.png';
 import { AuthContext } from '../../Context/Auth.context.jsx';
 import { useFormik } from 'formik';
@@ -31,15 +31,13 @@ export default function Login() {
     });
 
   async function sendLoginData(values) {
-    try {
+    try { 
       const response = await axios.post('/auth/signIn', values);
       const { data } = response;
-      console.log(data.message);
       if (data.message === "success") {
         localStorage.setItem('userToken', data.token);
         getProfile();
         navigate('/');
-        console.log(user);
       } else {
         setErrors(data.err[0]);
       }

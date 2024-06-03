@@ -32,8 +32,7 @@ export default function ProductDetails() {
                 setProduct(data.product);
             }
         } catch (error) {
-            console.log(error);
-        }
+         }
     };
 
     const addToCart = async (productId, quantity) => {
@@ -48,13 +47,10 @@ export default function ProductDetails() {
             if (response.data && response.data.message === "success") {
                 toast.success('Cart Updated successfully!');
                 getCart();
-            } else {
-                console.error("Invalid response from server:", response);
-            }
+            }  
         } catch (error) {
             // Handle error
-            console.error("Error adding to cart:", error);
-            setStatusError(error.response.data.validationError[0].type);
+             setStatusError(error.response.data.validationError[0].type);
             return setProductId(productId);
         }
     }
@@ -63,8 +59,7 @@ export default function ProductDetails() {
 
     const updateQuantity = async (productId) => {
         const newQuantity = inputRef.current.value; // Access the input field value using the ref
-        console.log(productId);
-        await addToCart(productId, newQuantity);
+         await addToCart(productId, newQuantity);
     };
     // Define the validation schema using Yup
     const schema = Yup.object({

@@ -25,8 +25,7 @@ export default function CancelOrder() {
                 setOrder(data.order);
             }
         } catch (error) {
-            console.log(error);
-            setStatusError(error.response.data.message)
+             setStatusError(error.response.data.message)
         }
     };
 
@@ -36,16 +35,19 @@ export default function CancelOrder() {
 
     const CancelOrder = async (values) => {
         const token = localStorage.getItem('userToken');
+       
+        try { 
         const { data } = await axios.patch(`/order/cancel/${location.state.orderId}`, values, { headers: { authorization: `Saja__${token}` } }).catch((err) => {
             setStatusError(err.response.data.message);
         });
-        console.log(data);
-        if (data.message === "success") {
+         if (data.message === "success") {
             toast.success('Order Canceled successfully');
             navigate('/MyOrders');
             getOrder();
         }
-
+    } catch (error) {
+        console.log(error);
+      }
     };
 
     const formik = useFormik({

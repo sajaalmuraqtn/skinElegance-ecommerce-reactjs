@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useState } from "react";
-import { toast } from "react-toastify";
 
 export const CartContext = createContext(null);
 
@@ -27,7 +26,6 @@ export function CartContextProvider({ children }) {
       setStatusError(error.response?.data.message || "An error occurred while fetching cart list.");
       setIsEmpty(true);
       setCart(null);
-      console.log(statusError);
     }
   };
 

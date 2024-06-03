@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import Loading from '../../Components/Loading/Loading.jsx';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
 export default function CardDetails() {
   const [cardDetails, setCardDetails] = useState(null);
-  let [statusError, setStatusError] = useState('');
-  let navigate = useNavigate();
+   let navigate = useNavigate();
   let location = useLocation()
   const getPaymentMethod = async () => {
     try {
@@ -19,11 +18,9 @@ export default function CardDetails() {
       const { data } = await axios.get(`/PaymentMethod/getSpecificPaymentMethod/${location.state.cardId}`, { headers: { authorization: `Saja__${token}` } });
       if (data.message === "success") {
         setCardDetails(data.paymentMethod.cardDetails);
-        console.log(cardDetails);
-      }
+       }
     } catch (error) {
-      console.log(error);
-    }
+     }
   };
 
   const deletePaymentMethod = async () => {
@@ -31,11 +28,14 @@ export default function CardDetails() {
       if (!token) {
         return navigate("/Login");
       }
+      try { 
       const { data } = await axios.get(`/PaymentMethod/deletePaymentMethod/${location.state.cardId}`, { headers: { authorization: `Saja__${token}` } });
       if (data.message === "success") {
         toast.success('Card deleted successfully!');
         navigate("/Profile");
       }
+    } catch (error) {
+     }
   };
   const getOrder = async () => {
     try {

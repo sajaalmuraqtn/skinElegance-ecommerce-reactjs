@@ -2,19 +2,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import "../Profile/profile.css"
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link, useLocation } from 'react-router-dom';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
 import { Helmet } from 'react-helmet';
 export default function AdvertisementDetails() {
     const { isCreatedThisMonth } = useContext(GlobalFunctionContext); // Access the context
     const [advertisement, setAdvertisement] = useState(null);
     const location = useLocation();
-    let navigate = useNavigate();
 
     async function getAdvertisement() {
-        const { data } = await axios.get(`/advertisement/${location.state.advertisementId}`);
-        setAdvertisement(data.advertisement);
+        try {
+            const { data } = await axios.get(`/advertisement/${location.state.advertisementId}`);
+            setAdvertisement(data.advertisement);
+        } catch (error) {
+        }
     }
 
     useEffect(() => {
@@ -60,11 +61,11 @@ export default function AdvertisementDetails() {
                                             <i class="fa-solid fa-phone fa-2xl" style={{ color: '#3ee302' }}></i>
                                             <span className='fs-4'> {advertisement?.phoneNumber}</span>
                                         </div>
-                                        {advertisement?.facebookLink!=='-' ? <div className='social-Media'>
+                                        {advertisement?.facebookLink !== '-' ? <div className='social-Media'>
                                             <i class="fa-brands fa-facebook fa-2xl" style={{ color: '#007fe0' }}></i>
                                             <a href={advertisement?.facebookLink} className='fs-4'> {advertisement.slug}</a>
                                         </div> : ''}
-                                        {advertisement?.instagramLink!=='-' ? <div className='social-Media'>
+                                        {advertisement?.instagramLink !== '-' ? <div className='social-Media'>
                                             <i class="fa-brands fa-instagram fa-2xl" style={{ color: '#f702aa' }}></i>
                                             <a href={advertisement?.instagramLink} className='fs-4'> {advertisement.slug}</a>
                                         </div> : ''}
@@ -99,13 +100,13 @@ export default function AdvertisementDetails() {
 
                                                             <td className="product-thumbnail">
                                                                 <div className="thumb">
-                                                                    <Link to={`/Advertisements/${advertisement.slug}/${service.slug}`} state={{ serviceId: service._id, advertisementId: advertisement._id ,slug:service.slug}}>
+                                                                    <Link to={`/Advertisements/${advertisement.slug}/${service.slug}`} state={{ serviceId: service._id, advertisementId: advertisement._id, slug: service.slug }}>
                                                                         <img src={service.mainImage.secure_url} alt="Image-HasTech" />
                                                                     </Link>
                                                                 </div>
                                                             </td>
                                                             <td className="product-name">
-                                                                <Link to={`/Advertisements/${advertisement.slug}/${service.slug}`} state={{ serviceId: service._id, advertisementId: advertisement._id,slug:service.slug }} className='title text-capitalize'>{service?.name}</Link>
+                                                                <Link to={`/Advertisements/${advertisement.slug}/${service.slug}`} state={{ serviceId: service._id, advertisementId: advertisement._id, slug: service.slug }} className='title text-capitalize'>{service?.name}</Link>
                                                             </td>
 
                                                             <td className="product-subtotal">

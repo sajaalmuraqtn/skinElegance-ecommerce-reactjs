@@ -20,15 +20,12 @@ export default function OrderDetails() {
         return navigate("/Login");
       }
       const { data } = await axios.get(`/order/${orderId}`, { headers: { authorization: `Saja__${token}` } });
-      console.log(data);
-      if (data.message === "success") {
+       if (data.message === "success") {
         setProducts(data.order.products);
         setOrder(data.order);
-        console.log(order);
-      }
+       }
     } catch (error) {
-      console.log(error);
-    }
+     }
   };
 
   useEffect(() => {

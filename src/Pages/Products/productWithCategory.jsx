@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
-import Categories from '../../Components/Categories/categories.jsx';
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+ import {useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Loading from '../../Components/Loading/Loading.jsx';
 import { ProductApiContext } from '../../Context/productApiContext.jsx';
 import ProductComponent from '../../Components/Product/product.component.jsx';
-import NotFound from '../../Components/NotFound/NotFound.jsx';
-import CategoryComponent from '../../Components/Categories/categoryComponent.jsx';
+ import CategoryComponent from '../../Components/Categories/categoryComponent.jsx';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 
@@ -15,8 +12,7 @@ export default function ProductWithCategory() {
   const [searchParams] = useSearchParams();
   const pageFromURL = searchParams.get('page');
   const [page, setPage] = useState(parseInt(pageFromURL) || 1);
-  const { isCreatedThisMonth, selectRandomColor } = useContext(GlobalFunctionContext);
-  const { getProducts, products, getSearchProducts } = useContext(ProductApiContext);
+   const { getProducts, products, getSearchProducts } = useContext(ProductApiContext);
   const navigate = useNavigate();
   const [totalPages, setTotalPages] = useState(0);
   const [categories, setCategories] = useState([]);
@@ -56,23 +52,17 @@ export default function ProductWithCategory() {
         if (data && data.total) {
           const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
           setTotalPages(totalPages);
-        } else {
-          console.error('Invalid response data:', data);
-        }
+        }  
       }).catch(error => {
-        console.error('Error fetching products:', error);
-      });
+       });
     } else {
       getProducts(page, `category/${location.state.categoryId}`).then(data => {
           if (data && data.total) {
             const totalPages = Math.ceil(data.total / 9); // Assuming 9 products per page
             setTotalPages(totalPages);
-          } else {
-            console.error('Invalid response data:', data);
-          }
+          }  
         }).catch(error => {
-          console.error('Error fetching products:', error);
-        });
+         });
     }
   }, [location, page, params]);
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import "../Profile/profile.css"
 import Loading from '../../Components/Loading/Loading.jsx';
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate } from 'react-router-dom';
 import { GlobalFunctionContext } from '../../Context/globalFunctionsContext.jsx';
 import { Helmet } from 'react-helmet';
 export default function ServiceDetails() {
@@ -14,13 +14,19 @@ export default function ServiceDetails() {
 
     async function getAdvertisement() {
         const token = localStorage.getItem("adminToken");
-        const { data } = await axios.get(`/advertisement/${location.state.advertisementId}`);
-        setAdvertisement(data.advertisement);
+        try {
+            const { data } = await axios.get(`/advertisement/${location.state.advertisementId}`);
+            setAdvertisement(data.advertisement);
+        } catch (error) {
+         }
     }
 
     async function getService() {
-        const { data } = await axios.get(`/advertisement/${location.state.advertisementId}/services/${location.state.serviceId}`);
-        setService(data.service);
+        try {
+            const { data } = await axios.get(`/advertisement/${location.state.advertisementId}/services/${location.state.serviceId}`);
+            setService(data.service);
+        } catch (error) {
+         }
     }
 
 
@@ -74,11 +80,11 @@ export default function ServiceDetails() {
                                         <i class="fa-solid fa-phone fa-2xl" style={{ color: '#3ee302' }}></i>
                                         <span className='fs-4'> {advertisement?.phoneNumber}</span>
                                     </div>
-                                    {advertisement?.facebookLink!=='-' ? <div className='social-Media'>
+                                    {advertisement?.facebookLink !== '-' ? <div className='social-Media'>
                                         <i class="fa-brands fa-facebook fa-2xl" style={{ color: '#007fe0' }}></i>
                                         <a href={advertisement?.facebookLink} className='fs-4'> {advertisement?.slug}</a>
                                     </div> : ''}
-                                    {advertisement?.instagramLink!=='-' ? <div className='social-Media'>
+                                    {advertisement?.instagramLink !== '-' ? <div className='social-Media'>
                                         <i class="fa-brands fa-instagram fa-2xl" style={{ color: '#f702aa' }}></i>
                                         <a href={advertisement?.instagramLink} className='fs-4'> {advertisement?.slug}</a>
                                     </div> : ''}
