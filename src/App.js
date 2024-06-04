@@ -19,7 +19,7 @@ import '../src/assets/css/plugins/nice-select.css'
 
 import './App.css';
 
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './Components/Layout/Layout';
 import Home from './Pages/Home/Home.jsx';
 import NotFound from './Components/NotFound/NotFound';
@@ -59,56 +59,51 @@ axios.defaults.baseURL = 'https://skinelegance-ecommerce-nodejs.onrender.com';
 
 function App() {
 
-  let routes = createBrowserRouter([{
-    path: '', element: <AuthContextProvider> <Layout /> </AuthContextProvider>, children: [
-      { index: true, element: <ProductApiContextProvider><Home  /> </ProductApiContextProvider> },
-      { path: 'Products', element: <ProductApiContextProvider><Product  /></ProductApiContextProvider>, },
-      { path: 'Products/category/:CategoryId', element: <ProductApiContextProvider><ProductWithCategory  /></ProductApiContextProvider>, },
-      { path: "Products/:productId", element: <ProductApiContextProvider><ProductDetails  /></ProductApiContextProvider> },
-      { path: 'Advertisements', element: <Advertisements  />},
-      { path: 'AddPaymentMethod', element: <ProtectedRouter><AddPaymentMethod/> </ProtectedRouter>  },
-      { path: "Advertisements/:advertisementId", element: <AdvertisementDetails  />},
-      { path: "Advertisements/:advertisementId/:serviceId",element:<ServiceDetails />},
-      { path: 'MyOrders', element: <AuthContextProvider><ProtectedRouter><MyOrders /></ProtectedRouter></AuthContextProvider> },
-      { path: 'MyOrders/Cancel', element: <ProductApiContextProvider><ProtectedRouter><CancelOrder /></ProtectedRouter></ProductApiContextProvider> },
-      { path: 'MyOrders/OrderDetails', element: <ProductApiContextProvider><ProtectedRouter><OrderDetails /></ProtectedRouter></ProductApiContextProvider> },
-      { path: 'Orders/CardDetails', element: <ProductApiContextProvider><ProtectedRouter><CardDetails/></ProtectedRouter></ProductApiContextProvider> },
-      { path: 'MyOrders/CancelOrder', element:<ProtectedRouter><CancelOrder /></ProtectedRouter>},
-      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage /></ProtectedRouter></AuthContextProvider> },
-      { path: 'FavoriteList', element: <ProductApiContextProvider><ProtectedRouter><FavoriteList /></ProtectedRouter> </ProductApiContextProvider> },
-      { path: 'MakeOrder', element: <AuthContextProvider><ProtectedRouter><MakeOrder /></ProtectedRouter></AuthContextProvider> },
-      { path: 'Profile', element: <AuthContextProvider><ProtectedRouter><Profile/></ProtectedRouter></AuthContextProvider> },
-      { path: 'UpdateProfile', element: <AuthContextProvider><ProtectedRouter><UpdateProfile  /></ProtectedRouter></AuthContextProvider> },
-      { path: 'Cart', element: <AuthContextProvider><ProtectedRouter><CartPage  /></ProtectedRouter></AuthContextProvider> },
-      { path: 'ForgotPassword', element: <AuthContextProvider><ForgotPassword  /></AuthContextProvider> },
-      { path: 'UpdatePassword', element: <AuthContextProvider><ProtectedRouter><UpdatePassword /></ProtectedRouter></AuthContextProvider> },
-      { path: 'ResetPassword', element: <AuthContextProvider><ResetPassword /></AuthContextProvider> },
-      { path: 'Login', element: <Login /> },
-      { path: 'About', element: <AboutPage /> },
-      { path: 'Frequently', element: <Frequently /> },
-      { path: 'Privacy', element: <Privacy /> },
-      { path: 'Contacts', element:<ProtectedRouter><Contacts /></ProtectedRouter> },
-      { path: 'Register', element: <AuthContextProvider> <Register /></AuthContextProvider> },
-      { path: '*', element: <NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} /> },
-    ]
-  }
 
-
-  ])
 
   return (
     <div className="App">
-      <GlobalFunctionContextProvider>
-        <CartContextProvider>
-
-          <AuthContextProvider>
-            <RouterProvider router={routes}>
-
-            </RouterProvider>
-          </AuthContextProvider>
-        </CartContextProvider>
-      </GlobalFunctionContextProvider>
-    </div>
+    <GlobalFunctionContextProvider>
+      <CartContextProvider>
+        <AuthContextProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<AuthContextProvider> <Layout /> </AuthContextProvider>}>
+                <Route index element={<ProductApiContextProvider><Home /></ProductApiContextProvider>} />
+                <Route path="Products" element={<ProductApiContextProvider><Product /></ProductApiContextProvider>} />
+                <Route path="Products/category/:CategoryId" element={<ProductApiContextProvider><ProductWithCategory /></ProductApiContextProvider>} />
+                <Route path="Products/:productId" element={<ProductApiContextProvider><ProductDetails /></ProductApiContextProvider>} />
+                <Route path="Advertisements" element={<Advertisements />} />
+                <Route path="AddPaymentMethod" element={<ProtectedRouter><AddPaymentMethod /></ProtectedRouter>} />
+                <Route path="Advertisements/:advertisementId" element={<AdvertisementDetails />} />
+                <Route path="Advertisements/:advertisementId/:serviceId" element={<ServiceDetails />} />
+                <Route path="MyOrders" element={<ProtectedRouter><MyOrders /></ProtectedRouter>} />
+                <Route path="MyOrders/Cancel" element={<ProtectedRouter><CancelOrder /></ProtectedRouter>} />
+                <Route path="MyOrders/OrderDetails" element={<ProtectedRouter><OrderDetails /></ProtectedRouter>} />
+                <Route path="Orders/CardDetails" element={<ProtectedRouter><CardDetails /></ProtectedRouter>} />
+                <Route path="MyOrders/CancelOrder" element={<ProtectedRouter><CancelOrder /></ProtectedRouter>} />
+                <Route path="Cart" element={<ProtectedRouter><CartPage /></ProtectedRouter>} />
+                <Route path="FavoriteList" element={<ProtectedRouter><FavoriteList /></ProtectedRouter>} />
+                <Route path="MakeOrder" element={<ProtectedRouter><MakeOrder /></ProtectedRouter>} />
+                <Route path="Profile" element={<ProtectedRouter><Profile /></ProtectedRouter>} />
+                <Route path="UpdateProfile" element={<ProtectedRouter><UpdateProfile /></ProtectedRouter>} />
+                <Route path="ForgotPassword" element={<ForgotPassword />} />
+                <Route path="UpdatePassword" element={<ProtectedRouter><UpdatePassword /></ProtectedRouter>} />
+                <Route path="ResetPassword" element={<ResetPassword />} />
+                <Route path="Login" element={<Login />} />
+                <Route path="About" element={<AboutPage />} />
+                <Route path="Frequently" element={<Frequently />} />
+                <Route path="Privacy" element={<Privacy />} />
+                <Route path="Contacts" element={<ProtectedRouter><Contacts /></ProtectedRouter>} />
+                <Route path="Register" element={<Register />} />
+                <Route path="*" element={<NotFound title={'Opps! You Lost'} titlePage={'Home'} goTO={''} />} />
+              </Route>
+            </Routes>
+          </Router>
+        </AuthContextProvider>
+      </CartContextProvider>
+    </GlobalFunctionContextProvider>
+  </div>
   );
 }
 
