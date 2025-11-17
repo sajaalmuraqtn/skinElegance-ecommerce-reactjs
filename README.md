@@ -42,7 +42,7 @@ This project demonstrates my ability to create dynamic and interactive web appli
 ![Product Details](./src/assets/productdetails.png)
 
 ### 📄 AboutUs Page
-![aboutus](./src/assets/about.png)
+![aboutus](./src/assets/aboutus.png)
 
 ### 📄 Frequently Questions Page
 ![frequently](./src/assets/frequently.png)
