@@ -1,4 +1,4 @@
-# 💄 Skin Elegance Web
+# 💄 Skin Elegance Ecommerce
 
 [Live Demo](https://skinelegance-ecommerce.onrender.com/)
 
@@ -33,18 +33,18 @@ This project demonstrates my ability to create dynamic and interactive web appli
 *(Replace with your actual screenshots stored in `assets` or another folder)*
 
 ### 🏠 Home Page
-![Home Page](./assets/homepage.png)
+![Home Page](./src/assets/homepage.png)
 
 ### 🛍️ Product Listing Page
-![Product Listing](./assets/products.png)
+![Product Listing](./src/assets/products.png)
 
 ### 📄 Product Details Page
-![Product Details](./assets/productdetails.png)
+![Product Details](./src/assets/productdetails.png)
 
 ### 📄 Register Page
-![Product Details](./assets/register.png)
+![Product Details](./src/assets/register.png)
 
 ### 📄 Login Page
-![Product Details](./assets/login.png)
+![Product Details](./src/assets/login.png)
  
  
