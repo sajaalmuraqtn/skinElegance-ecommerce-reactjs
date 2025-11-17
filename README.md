@@ -41,6 +41,15 @@ This project demonstrates my ability to create dynamic and interactive web appli
 ### 📄 Product Details Page
 ![Product Details](./src/assets/productdetails.png)
 
+### 📄 AboutUs Page
+![Product Details](./src/assets/about.png)
+
+### 📄 Frequently Questions Page
+![Product Details](./src/assets/frequently.png)
+
+### 📄 Privacy Page
+![Product Details](./src/assets/privacy.png)
+
 ### 📄 Register Page
 ![Product Details](./src/assets/register.png)
 
