@@ -1,7 +1,5 @@
 # 💄 Skin Elegance Ecommerce
 
-[Live Demo](https://skinelegance-ecommerce.onrender.com/)
-
 ## ✨ Project Overview
 **Skin Elegance Web** is a modern, responsive e-commerce website built with **React**.  
 The platform is designed to provide a seamless online shopping experience for skincare enthusiasts, allowing users to browse products, view details, and make purchases effortlessly.
@@ -30,7 +28,8 @@ This project demonstrates my ability to create dynamic and interactive web appli
 ---
 
 ## 📸 Screenshots
-*(Replace with your actual screenshots stored in `assets` or another folder)*
+
+[Live Demo](https://skinelegance-ecommerce.onrender.com/)
 
 ### 🏠 Home Page
 ![Home Page](./src/assets/homepage.png)
